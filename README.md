@@ -8,4 +8,4 @@ Een webapp voor het berekenen van de aanbevolen endotracheale tube maat voor kin
 
 Oorspronkelijk gemaakt als Xcode/SwiftUI app, omgezet naar webapp voor eenvoudige toegang.
 
-👉 [Live demo](https://JE-GEBRUIKERSNAAM.github.io/tube-calc/)
+👉 [Live demo](https://diabeast.github.io/tube-calc/)
