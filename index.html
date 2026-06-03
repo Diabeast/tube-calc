@@ -2,417 +2,1059 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tube Size Calculator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>TubeCalc</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007aff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TubeCalc">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+
     <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ============ CSS VARIABLES ============ */
+        :root {
+            --bg-color: #f2f2f7;
+            --text-color: #1a1a2e;
+            --subtext-color: #6d6d72;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --card-border: 1px solid rgba(0,0,0,0.06);
+            --primary: #007aff;
+            --accent: #34c759;
+            --danger: #ff3b30;
+            --warning: #ff9500;
+            --info: #5ac8fa;
+            --modal-bg: rgba(0,0,0,0.4);
+            --separator: rgba(60,60,67,0.12);
+            --group-bg: #ffffff;
+            --nav-bg: rgba(242,242,247,0.92);
         }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1c1c1e;
+                --text-color: #f0f0f5;
+                --subtext-color: #8e8e93;
+                --card-bg: #2c2c2e;
+                --card-shadow: 0 8px 16px rgba(0,0,0,0.3);
+                --card-border: 1px solid rgba(255,255,255,0.06);
+                --primary: #0a84ff;
+                --accent: #30d158;
+                --danger: #ff453a;
+                --warning: #ff9f0a;
+                --info: #64d2ff;
+                --modal-bg: rgba(0,0,0,0.6);
+                --separator: rgba(255,255,255,0.12);
+                --group-bg: #2c2c2e;
+                --nav-bg: rgba(28,28,30,0.92);
+            }
+        }
+
+        /* ============ RESET ============ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #000;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
             min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        /* ============ HEADER ============ */
+        header {
             display: flex;
             align-items: center;
             justify-content: center;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 420px;
-            padding: 40px 24px;
-            text-align: center;
-        }
-
-        /* Logo */
-        .logo {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 24px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 16px 16px 8px;
             position: relative;
         }
+        .header-left {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .hamburger-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .hamburger-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-color);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-        .logo svg {
-            width: 56px;
-            height: 56px;
-            fill: none;
+        /* ============ SLIDE-IN MENU ============ */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 200;
+        }
+        .menu-overlay.open { display: block; }
+
+        .menu-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: min(310px, 85vw);
+            background: var(--card-bg);
+            z-index: 201;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .menu-panel.open { transform: translateX(0); }
+
+        .menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid var(--separator);
+        }
+        .menu-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .menu-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+            padding: 4px 8px;
+        }
+        .menu-nav { padding: 12px 0; }
+        .menu-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-color);
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            transition: background 0.15s;
+        }
+        .menu-nav-item:hover { background: rgba(127,127,127,0.08); }
+        .menu-nav-item.active { color: var(--primary); font-weight: 600; }
+        .menu-nav-item svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+        /* ============ MAIN CONTAINER ============ */
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 16px 40px;
+        }
+
+        /* ============ CARD ============ */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--card-shadow);
+            border: var(--card-border);
+            transition: background 0.3s;
+        }
+        .card-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--subtext-color);
+            margin-bottom: 16px;
+        }
+
+        /* ============ LOGO SECTION ============ */
+        .hero {
+            text-align: center;
+            padding: 32px 16px 8px;
+        }
+        .hero-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-icon svg {
+            width: 40px;
+            height: 40px;
             stroke: #fff;
+            fill: none;
             stroke-width: 1.5;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
-
-        /* Title */
-        h1 {
-            font-size: 28px;
+        .hero h1 {
+            font-size: 26px;
             font-weight: 700;
-            color: #fff;
-            margin-bottom: 48px;
             letter-spacing: -0.3px;
         }
-
-        /* Age section */
-        .age-section {
-            margin-bottom: 48px;
+        .hero p {
+            color: var(--subtext-color);
+            font-size: 0.9rem;
+            margin-top: 4px;
         }
 
-        .age-label {
-            font-size: 20px;
+        /* ============ FORMULA SELECTOR ============ */
+        .formula-tabs {
+            display: flex;
+            background: var(--bg-color);
+            border-radius: 12px;
+            padding: 3px;
+            margin-bottom: 20px;
+        }
+        .formula-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border: none;
+            background: none;
+            border-radius: 10px;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--subtext-color);
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .formula-tab.active {
+            background: var(--card-bg);
+            color: var(--text-color);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        /* ============ AGE SECTION ============ */
+        .age-section { margin-bottom: 8px; }
+
+        .age-display {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 6px;
             margin-bottom: 16px;
         }
-
-        .age-value {
-            font-size: 56px;
+        .age-number {
+            font-size: 64px;
             font-weight: 800;
-            color: #fff;
-            letter-spacing: -1px;
-            margin-bottom: 20px;
-            transition: color 0.2s;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+        .age-unit {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--subtext-color);
         }
 
-        /* Custom slider */
-        .slider-container {
-            position: relative;
-            padding: 0 4px;
-        }
-
+        /* Slider */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
             height: 6px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(127,127,127,0.25);
             border-radius: 3px;
             outline: none;
-            cursor: pointer;
         }
-
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
             width: 28px;
             height: 28px;
-            background: #fff;
+            background: var(--primary);
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             transition: transform 0.15s;
         }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-        }
-
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
         input[type="range"]::-moz-range-thumb {
             width: 28px;
             height: 28px;
-            background: #fff;
+            background: var(--primary);
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .slider-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.35);
-        }
-
-        /* Result section */
-        .result-label {
-            font-size: 20px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 8px;
-        }
-
-        .result-value {
-            font-size: 72px;
-            font-weight: 800;
-            color: #34c759;
-            letter-spacing: -2px;
-            line-height: 1;
-            margin-bottom: 4px;
-            transition: color 0.3s;
-        }
-
-        .result-unit {
-            font-size: 18px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.4);
-            margin-bottom: 32px;
-        }
-
-        /* Formula info */
-        .formula-box {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 16px 20px;
-            margin-top: 16px;
-        }
-
-        .formula-box p {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1.6;
-        }
-
-        .formula-box .formula {
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Age quick-select dots */
-        .quick-select {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            margin-top: 16px;
-            flex-wrap: wrap;
-        }
-
-        .quick-select button {
-            background: rgba(255, 255, 255, 0.08);
-            border: none;
-            color: rgba(255, 255, 255, 0.5);
-            font-family: 'Inter', sans-serif;
+            margin-top: 6px;
             font-size: 12px;
             font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
+            color: var(--subtext-color);
+            opacity: 0.6;
         }
 
-        .quick-select button:hover {
-            background: rgba(255, 255, 255, 0.15);
+        /* Age quick buttons */
+        .age-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 12px;
+        }
+        .age-btn {
+            background: var(--bg-color);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--subtext-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .age-btn:hover { background: rgba(127,127,127,0.12); }
+        .age-btn.active {
+            background: var(--primary);
             color: #fff;
         }
 
-        .quick-select button.active {
-            background: rgba(52, 199, 89, 0.2);
-            color: #34c759;
-        }
-
-        /* Cuffed toggle */
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-
-        .toggle-label {
-            font-size: 15px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.5);
-            transition: color 0.2s;
-        }
-
-        .toggle-label.active {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .toggle-switch {
+        /* ============ RESULT ============ */
+        .result-card {
+            text-align: center;
+            padding: 32px 24px;
             position: relative;
-            width: 48px;
-            height: 28px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 14px;
-            cursor: pointer;
+            overflow: hidden;
+        }
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent);
             transition: background 0.3s;
         }
-
-        .toggle-switch.active {
-            background: #34c759;
+        .result-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--subtext-color);
+            margin-bottom: 4px;
         }
-
-        .toggle-switch .knob {
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 22px;
-            height: 22px;
-            background: #fff;
-            border-radius: 50%;
-            transition: transform 0.3s;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .toggle-switch.active .knob {
-            transform: translateX(20px);
-        }
-
-        /* Footer */
-        .footer {
-            margin-top: 32px;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .container {
-            animation: fadeIn 0.5s ease-out;
-        }
-
         .result-value {
-            transition: all 0.2s ease;
+            font-size: 72px;
+            font-weight: 800;
+            letter-spacing: -3px;
+            line-height: 1;
+            margin: 4px 0;
+            transition: color 0.3s;
         }
+        .result-unit {
+            font-size: 1rem;
+            color: var(--subtext-color);
+            font-weight: 500;
+        }
+        .result-formula {
+            font-size: 0.8rem;
+            color: var(--subtext-color);
+            margin-top: 8px;
+            opacity: 0.7;
+        }
+
+        /* ============ INFO ROW ============ */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--separator);
+        }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { font-size: 0.9rem; color: var(--subtext-color); }
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* ============ IOS SETTINGS PAGE ============ */
+        .settings-page {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg-color);
+            z-index: 300;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .settings-page.open { display: block; }
+
+        .settings-header {
+            position: sticky;
+            top: 0;
+            display: flex;
+            align-items: center;
+            padding: max(env(safe-area-inset-top, 12px), 12px) 16px 12px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid var(--separator);
+            z-index: 10;
+            min-height: 44px;
+        }
+        .settings-back-btn {
+            color: var(--primary);
+            background: none;
+            border: none;
+            font-size: 1.05rem;
+            cursor: pointer;
+            padding: 6px 0;
+            min-width: 64px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            font-family: inherit;
+        }
+        .settings-header-title {
+            flex: 1;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 0;
+        }
+        .settings-save-badge {
+            min-width: 64px;
+            text-align: right;
+            color: var(--primary);
+            font-size: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+        }
+        .settings-body { padding: 8px 0 40px; }
+
+        .settings-section-title {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--subtext-color);
+            padding: 16px 20px 6px;
+        }
+        .settings-group {
+            background: var(--group-bg);
+            border-radius: 12px;
+            margin: 0 16px 4px;
+            overflow: hidden;
+            border: var(--card-border);
+        }
+        .settings-row {
+            display: flex;
+            align-items: center;
+            min-height: 44px;
+            padding: 10px 16px;
+            border-bottom: 0.5px solid var(--separator);
+            gap: 10px;
+        }
+        .settings-row:last-child { border-bottom: none; }
+
+        .settings-row-label {
+            font-size: 1rem;
+            color: var(--text-color);
+            flex-shrink: 0;
+            min-width: 110px;
+        }
+        .settings-row-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            background: transparent;
+            color: var(--subtext-color);
+            text-align: right;
+            min-width: 0;
+            font-family: inherit;
+        }
+        .settings-row-input::placeholder { color: #c7c7cc; }
+        .settings-row-select {
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            background: transparent;
+            color: var(--primary);
+            text-align: right;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* ============ TABBED VIEWS ============ */
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* ============ INFO VIEW ============ */
+        .info-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .info-section p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--subtext-color);
+            margin-bottom: 12px;
+        }
+        .formula-highlight {
+            background: var(--bg-color);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            margin: 12px 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        /* ============ REFERENCE TABLE ============ */
+        .ref-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .ref-table th {
+            text-align: left;
+            padding: 8px 12px;
+            color: var(--subtext-color);
+            font-weight: 600;
+            border-bottom: 1px solid var(--separator);
+        }
+        .ref-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--separator);
+        }
+        .ref-table tr:last-child td { border-bottom: none; }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 400px) {
+            .age-number { font-size: 48px; }
+            .result-value { font-size: 56px; }
+            .hero h1 { font-size: 22px; }
+            .age-grid { grid-template-columns: repeat(7, 1fr); }
+            .age-btn { font-size: 0.75rem; padding: 8px 0; }
+        }
+
+        /* ============ ANIMATIONS ============ */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card { animation: fadeUp 0.4s ease-out; }
+        .card:nth-child(2) { animation-delay: 0.05s; }
+        .card:nth-child(3) { animation-delay: 0.1s; }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--subtext-color);
+            opacity: 0.5;
+            padding: 24px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-green { background: var(--accent); color: #fff; }
+        .badge-orange { background: var(--warning); color: #fff; }
+        .badge-red { background: var(--danger); color: #fff; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Logo -->
-        <div class="logo">
-            <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
-                <path d="M28 8C28 8 20 20 20 28C20 32.4183 23.5817 36 28 36C32.4183 36 36 32.4183 36 28C36 20 28 8 28 8Z"/>
-                <path d="M28 36V48"/>
-                <path d="M20 44H36"/>
-                <path d="M16 28H12" stroke-width="1.5"/>
-                <path d="M40 28H44" stroke-width="1.5"/>
-                <path d="M28 16V20" stroke-width="1.5"/>
-                <path d="M28 36V40" stroke-width="1.5"/>
-            </svg>
+
+    <!-- ============ HEADER ============ -->
+    <header>
+        <div class="header-left">
+            <button class="hamburger-btn" onclick="openMenu()" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
         </div>
+        <span class="logo-text">TubeCalc</span>
+    </header>
 
-        <h1>Tube Size Calculator</h1>
-
-        <!-- Cuffed / Uncuffed toggle -->
-        <div class="toggle-container">
-            <span class="toggle-label active" id="label-uncuffed">Uncuffed</span>
-            <div class="toggle-switch" id="cuffed-toggle">
-                <div class="knob"></div>
-            </div>
-            <span class="toggle-label" id="label-cuffed">Cuffed</span>
+    <!-- ============ SLIDE-IN MENU ============ -->
+    <div class="menu-overlay" id="menu-overlay" onclick="closeMenu()"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-header">
+            <h2>TubeCalc</h2>
+            <button class="menu-close" onclick="closeMenu()">✕</button>
         </div>
+        <nav class="menu-nav">
+            <button class="menu-nav-item active" onclick="switchView('calculator')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="2" width="16" height="20" rx="2"/>
+                    <line x1="8" y1="6" x2="16" y2="6"/>
+                    <line x1="8" y1="10" x2="16" y2="10"/>
+                    <line x1="8" y1="14" x2="12" y2="14"/>
+                    <circle cx="15" cy="15" r="2"/>
+                    <circle cx="15" cy="19" r="2"/>
+                </svg>
+                Calculator
+            </button>
+            <button class="menu-nav-item" onclick="switchView('info')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                Informatie
+            </button>
+            <button class="menu-nav-item" onclick="closeMenu(); openSettings();">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                Instellingen
+            </button>
+        </nav>
+    </div>
 
-        <!-- Age slider -->
-        <div class="age-section">
-            <div class="age-label">Leeftijd</div>
-            <div class="age-value" id="age-display">1</div>
-            <div class="slider-container">
-                <input type="range" id="age-slider" min="1" max="14" value="1" step="1">
-                <div class="slider-labels">
-                    <span>1</span>
-                    <span>14</span>
+    <!-- ============ iOS SETTINGS PAGE ============ -->
+    <div class="settings-page" id="settings-page">
+        <div class="settings-header">
+            <button class="settings-back-btn" onclick="closeSettings()">
+                <svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+                    <path d="M8.5 1L1.5 8L8.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                &nbsp;Terug
+            </button>
+            <span class="settings-header-title">Instellingen</span>
+            <button class="settings-save-badge" onclick="saveSettings()">Bewaar</button>
+        </div>
+        <div class="settings-body">
+
+            <div class="settings-section-title">Tube Type</div>
+            <div class="settings-group">
+                <div class="settings-row">
+                    <span class="settings-row-label">Standaard type</span>
+                    <select class="settings-row-select" id="sett-tube-type">
+                        <option value="uncuffed">Uncuffed</option>
+                        <option value="cuffed">Cuffed</option>
+                    </select>
                 </div>
             </div>
-            <div class="quick-select" id="quick-select"></div>
-        </div>
 
-        <!-- Result -->
-        <div class="result-label">Aanbevolen tube maat</div>
-        <div class="result-value" id="result">4.25</div>
-        <div class="result-unit">mm</div>
+            <div class="settings-section-title">Formule</div>
+            <div class="settings-group">
+                <div class="settings-row">
+                    <span class="settings-row-label">Formule</span>
+                    <span class="settings-row-info" style="font-size:0.9rem;color:var(--subtext-color);text-align:right;flex:1;">Cole</span>
+                </div>
+            </div>
 
-        <!-- Formula info -->
-        <div class="formula-box">
-            <p>
-                Formule: <span class="formula" id="formula-display">(Leeftijd / 4) + 4</span>
-            </p>
-            <p style="margin-top: 4px; font-size: 12px; color: rgba(255,255,255,0.35);">
-                Cole's formule voor pediatrische tube maat
-            </p>
-        </div>
+            <div class="settings-section-title">Weergave</div>
+            <div class="settings-group">
+                <div class="settings-row">
+                    <span class="settings-row-label">Standaard leeftijd</span>
+                    <input class="settings-row-input" type="number" id="sett-default-age" min="1" max="14" step="1" placeholder="1">
+                </div>
+            </div>
 
-        <div class="footer">
-            TubeCalc &mdash; voor medisch gebruik, altijd klinisch beoordelen
+            <div class="settings-section-title">Over</div>
+            <div class="settings-group">
+                <div class="settings-row">
+                    <span class="settings-row-label">Versie</span>
+                    <span class="settings-row-info" style="text-align:right;color:var(--subtext-color);">TubeCalc 2.0</span>
+                </div>
+                <div class="settings-row">
+                    <span class="settings-row-label">Modus</span>
+                    <span class="settings-row-info" style="text-align:right;color:var(--subtext-color);" id="sett-mode">Web</span>
+                </div>
+            </div>
+
+            <div style="height:32px;"></div>
         </div>
     </div>
 
+    <!-- ============ CALCULATOR VIEW ============ -->
+    <div class="container view active" id="view-calculator">
+
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-icon">
+                <svg viewBox="0 0 40 40">
+                    <path d="M20 6C20 6 14 16 14 22C14 25.3 16.7 28 20 28C23.3 28 26 25.3 26 22C26 16 20 6 20 6Z"/>
+                    <path d="M20 28V36"/>
+                    <path d="M14 34H26"/>
+                    <line x1="10" y1="20" x2="7" y2="20"/>
+                    <line x1="30" y1="20" x2="33" y2="20"/>
+                    <line x1="20" y1="12" x2="20" y2="15"/>
+                    <line x1="20" y1="30" x2="20" y2="32"/>
+                </svg>
+            </div>
+            <h1>Tube Size Calculator</h1>
+            <p>Cole's formule voor pediatrische tube maat</p>
+        </div>
+
+        <!-- Formula Toggle -->
+        <div class="card">
+            <div class="formula-tabs" id="formula-tabs">
+                <button class="formula-tab active" data-type="uncuffed" onclick="setTubeType('uncuffed')">Uncuffed</button>
+                <button class="formula-tab" data-type="cuffed" onclick="setTubeType('cuffed')">Cuffed</button>
+            </div>
+
+            <!-- Age -->
+            <div class="age-section">
+                <div class="age-display">
+                    <span class="age-number" id="age-display">1</span>
+                    <span class="age-unit">jaar</span>
+                </div>
+                <input type="range" id="age-slider" min="0" max="14" value="1" step="1">
+                <div class="slider-labels">
+                    <span>0</span>
+                    <span>14</span>
+                </div>
+                <div class="age-grid" id="age-grid"></div>
+            </div>
+        </div>
+
+        <!-- Result -->
+        <div class="card result-card" id="result-card">
+            <div class="result-label">Aanbevolen tube maat</div>
+            <div class="result-value" id="result">4.00</div>
+            <div class="result-unit">mm <span class="badge" id="result-badge">Uncuffed</span></div>
+            <div class="result-formula" id="result-formula">(Leeftijd / 4) + 4</div>
+        </div>
+
+        <!-- Details -->
+        <div class="card">
+            <div class="card-title">Details</div>
+            <div class="info-row">
+                <span class="info-label">Leeftijd</span>
+                <span class="info-value" id="detail-age">1 jaar</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Tube type</span>
+                <span class="info-value" id="detail-type">Uncuffed</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Interne diameter</span>
+                <span class="info-value" id="detail-size">4.00 mm</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Cole's formule</span>
+                <span class="info-value" id="detail-formula">(1 / 4) + 4</span>
+            </div>
+        </div>
+
+        <!-- Safety note -->
+        <div class="card" style="background: rgba(255,149,0,0.08); border-color: rgba(255,149,0,0.2);">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+                <span style="font-size:1.2rem;">⚠️</span>
+                <p style="font-size:0.8rem;color:var(--subtext-color);line-height:1.5;">
+                    Dit is een hulpmiddel. Altijd klinisch beoordelen. De formule geeft een indicatie;
+                    definitieve tube maat is afhankelijk van patiënt en klinische situatie.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">TubeCalc &copy; 2024 &mdash; voor medisch professionals</div>
+    </div>
+
+    <!-- ============ INFO VIEW ============ -->
+    <div class="container view" id="view-info">
+        <div class="hero">
+            <div class="hero-icon">
+                <svg viewBox="0 0 40 40">
+                    <circle cx="20" cy="20" r="16"/>
+                    <line x1="20" y1="24" x2="20" y2="18"/>
+                    <line x1="20" y1="14" x2="20" y2="13"/>
+                </svg>
+            </div>
+            <h1>Over TubeCalc</h1>
+            <p>Pediatrische tube maat calculator</p>
+        </div>
+
+        <div class="card info-section">
+            <h3>Cole's Formule</h3>
+            <p>
+                De formule van Cole wordt gebruikt om de juiste endotracheale tube maat te berekenen
+                voor kinderen vanaf de geboorte tot 14 jaar.
+            </p>
+            <div class="formula-highlight">
+                Uncuffed: (leeftijd / 4) + 4<br>
+                Cuffed: (leeftijd / 4) + 3.5
+            </div>
+            <p>
+                <strong>Let op:</strong> Voor cuffed tubes wordt 0.5 mm afgetrokken omdat de
+                cuff zelf ook ruimte inneemt in de luchtpijp.
+            </p>
+        </div>
+
+        <div class="card info-section">
+            <h3>Referentietabel</h3>
+            <table class="ref-table">
+                <thead>
+                    <tr>
+                        <th>Leeftijd</th>
+                        <th>Uncuffed</th>
+                        <th>Cuffed</th>
+                    </tr>
+                </thead>
+                <tbody id="ref-table-body"></tbody>
+            </table>
+        </div>
+
+        <div class="card info-section">
+            <h3>Bron</h3>
+            <p>
+                Cole F. Pediatric formulas for the anesthesiologist. <em>Am J Dis Child.</em> 1957.
+            </p>
+            <p style="font-size:0.8rem;margin-top:4px;">
+                Altijd de meest actuele richtlijnen raadplegen voor klinische beslissingen.
+            </p>
+        </div>
+
+        <div class="footer">TubeCalc &copy; 2024 &mdash; voor medisch professionals</div>
+    </div>
+
+
     <script>
-        const slider = document.getElementById('age-slider');
-        const ageDisplay = document.getElementById('age-display');
-        const resultDisplay = document.getElementById('result');
-        const formulaDisplay = document.getElementById('formula-display');
-        const quickSelect = document.getElementById('quick-select');
-        const cuffedToggle = document.getElementById('cuffed-toggle');
-        const labelUncuffed = document.getElementById('label-uncuffed');
-        const labelCuffed = document.getElementById('label-cuffed');
+        // ============ STATE ============
+        const CFG_KEY = 'tubecalc_settings';
+        const DEFAULTS = {
+            tubeType: 'uncuffed',
+            defaultAge: 1,
+        };
+        let currentTubeType = 'uncuffed';
+        let currentAge = 1;
 
-        let isCuffed = false;
+        // ============ SETTINGS ============
+        function getSettings() {
+            try {
+                const s = JSON.parse(localStorage.getItem(CFG_KEY) || '{}');
+                return {
+                    tubeType: s.tubeType || DEFAULTS.tubeType,
+                    defaultAge: parseInt(s.defaultAge) || DEFAULTS.defaultAge,
+                };
+            } catch { return { ...DEFAULTS }; }
+        }
 
-        // Build quick select buttons (1-14)
-        for (let i = 1; i <= 14; i++) {
+        function openSettings() {
+            const s = getSettings();
+            document.getElementById('sett-tube-type').value = s.tubeType;
+            document.getElementById('sett-default-age').value = s.defaultAge;
+            const mode = window.navigator.standalone ? 'PWA (standalone)' : 'Web';
+            document.getElementById('sett-mode').textContent = mode;
+            document.getElementById('settings-page').classList.add('open');
+        }
+
+        function closeSettings() {
+            document.getElementById('settings-page').classList.remove('open');
+        }
+
+        function saveSettings() {
+            const s = {
+                tubeType: document.getElementById('sett-tube-type').value,
+                defaultAge: parseInt(document.getElementById('sett-default-age').value) || 1,
+            };
+            localStorage.setItem(CFG_KEY, JSON.stringify(s));
+            currentTubeType = s.tubeType;
+            currentAge = Math.max(0, Math.min(14, s.defaultAge || 1));
+            document.getElementById('age-slider').value = currentAge;
+            closeSettings();
+            updateAll();
+        }
+
+        // ============ MENU ============
+        function openMenu() {
+            document.getElementById('menu-overlay').classList.add('open');
+            document.getElementById('menu-panel').classList.add('open');
+        }
+        function closeMenu() {
+            document.getElementById('menu-overlay').classList.remove('open');
+            document.getElementById('menu-panel').classList.remove('open');
+        }
+
+        // ============ VIEWS ============
+        function switchView(name) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-' + name).classList.add('active');
+            document.querySelectorAll('.menu-nav-item').forEach(item => item.classList.remove('active'));
+            const tabMap = { calculator: 0, info: 1 };
+            document.querySelectorAll('.menu-nav-item')[tabMap[name]]?.classList.add('active');
+            closeMenu();
+        }
+
+        // ============ AGE GRID ============
+        const ageGrid = document.getElementById('age-grid');
+        for (let i = 0; i <= 14; i++) {
             const btn = document.createElement('button');
+            btn.className = 'age-btn' + (i === 0 ? '' : '');
             btn.textContent = i;
             btn.dataset.age = i;
             btn.addEventListener('click', () => {
-                slider.value = i;
-                update();
+                document.getElementById('age-slider').value = i;
+                currentAge = i;
+                updateAll();
             });
-            quickSelect.appendChild(btn);
+            ageGrid.appendChild(btn);
         }
 
-        // Cuffed toggle
-        cuffedToggle.addEventListener('click', () => {
-            isCuffed = !isCuffed;
-            cuffedToggle.classList.toggle('active', isCuffed);
-            labelUncuffed.classList.toggle('active', !isCuffed);
-            labelCuffed.classList.toggle('active', isCuffed);
-            update();
+        // ============ TUBE TYPE ============
+        function setTubeType(type) {
+            currentTubeType = type;
+            document.querySelectorAll('.formula-tab').forEach(t => {
+                t.classList.toggle('active', t.dataset.type === type);
+            });
+            updateAll();
+        }
+
+        // ============ SLIDER ============
+        document.getElementById('age-slider').addEventListener('input', function() {
+            currentAge = parseInt(this.value);
+            updateAll();
         });
 
-        // Slider input
-        slider.addEventListener('input', update);
+        // ============ UPDATE ============
+        function updateAll() {
+            const age = currentAge;
+            const isCuffed = currentTubeType === 'cuffed';
 
-        function update() {
-            const age = parseInt(slider.value);
-            ageDisplay.textContent = age;
+            // Age display
+            document.getElementById('age-display').textContent = age;
 
-            // Cole's formula
-            // Uncuffed: (age / 4) + 4
-            // Cuffed:   (age / 4) + 3.5
-            const tubeSize = isCuffed ? (age / 4) + 3.5 : (age / 4) + 4;
-            const formatted = tubeSize.toFixed(2);
-            resultDisplay.textContent = formatted;
+            // Slider
+            document.getElementById('age-slider').value = age;
 
-            // Update formula display
-            const offset = isCuffed ? '3.5' : '4';
-            formulaDisplay.textContent = `(Leeftijd / 4) + ${offset}`;
-
-            // Highlight active quick-select button
-            document.querySelectorAll('.quick-select button').forEach(btn => {
+            // Age buttons
+            document.querySelectorAll('.age-btn').forEach(btn => {
                 btn.classList.toggle('active', parseInt(btn.dataset.age) === age);
             });
 
-            // Color the result based on value range
-            if (tubeSize < 4.5) {
-                resultDisplay.style.color = '#ff9500';  // orange - small
-            } else if (tubeSize > 6.5) {
-                resultDisplay.style.color = '#ff3b30';  // red - large
+            // Calculation: Cole's formula
+            // Uncuffed: (age / 4) + 4
+            // Cuffed: (age / 4) + 3.5
+            const rawSize = isCuffed ? (age / 4) + 3.5 : (age / 4) + 4;
+            // Afronden naar dichtstbijzijnde 0.5 (halve maat)
+            const tubeSize = Math.round(rawSize * 2) / 2;
+            const formatted = tubeSize.toFixed(1);
+
+            // Result
+            document.getElementById('result').textContent = formatted;
+
+            // Color coding based on size
+            const resultEl = document.getElementById('result');
+            let color;
+            if (tubeSize < 4.0) {
+                color = 'var(--warning)';  // orange - very small (neonates)
+            } else if (tubeSize < 4.5) {
+                color = '#5ac8fa';  // blue - small
+            } else if (tubeSize > 7.0) {
+                color = 'var(--danger)';  // red - large
             } else {
-                resultDisplay.style.color = '#34c759';  // green - normal range
+                color = 'var(--accent)';  // green - normal range
             }
+            resultEl.style.color = color;
+            document.querySelector('.result-card').style.setProperty('--accent', color);
+
+            // Badge
+            const badge = document.getElementById('result-badge');
+            badge.textContent = isCuffed ? 'Cuffed' : 'Uncuffed';
+            badge.className = 'badge ' + (isCuffed ? 'badge-orange' : 'badge-green');
+
+            // Formula display
+            const offset = isCuffed ? '3.5' : '4';
+            document.getElementById('result-formula').textContent = `(Leeftijd / 4) + ${offset}`;
+
+            // Detail rows
+            document.getElementById('detail-age').textContent = age + ' jaar';
+            document.getElementById('detail-type').textContent = isCuffed ? 'Cuffed' : 'Uncuffed';
+            document.getElementById('detail-size').textContent = tubeSize.toFixed(1) + ' mm';
+            document.getElementById('detail-formula').textContent = `(${age} / 4) + ${offset} → ${tubeSize.toFixed(1)} mm`;
+
+            // Formula tab sync
+            document.querySelectorAll('.formula-tab').forEach(t => {
+                t.classList.toggle('active', t.dataset.type === currentTubeType);
+            });
         }
 
-        // Initial update
-        update();
+        // ============ REFERENCE TABLE ============
+        function roundHalf(v) {
+            return Math.round(v * 2) / 2;
+        }
+        function buildRefTable() {
+            const tbody = document.getElementById('ref-table-body');
+            for (let age = 0; age <= 14; age++) {
+                const uncuffed = roundHalf((age / 4) + 4).toFixed(1);
+                const cuffed = roundHalf((age / 4) + 3.5).toFixed(1);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${age} jaar</td><td>${uncuffed} mm</td><td>${cuffed} mm</td>`;
+                tbody.appendChild(tr);
+            }
+        }
+        buildRefTable();
+
+        // ============ INIT ============
+        const settings = getSettings();
+        currentTubeType = settings.tubeType;
+        currentAge = Math.max(0, Math.min(14, settings.defaultAge || 1));
+        document.getElementById('age-slider').value = currentAge;
+
+        // Set initial formula tab
+        document.querySelectorAll('.formula-tab').forEach(t => {
+            t.classList.toggle('active', t.dataset.type === currentTubeType);
+        });
+
+        updateAll();
+
+        // ============ SERVICE WORKER ============
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
     </script>
 </body>
 </html>
