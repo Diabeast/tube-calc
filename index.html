@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tube Size Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        /* Logo */
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo svg {
+            width: 56px;
+            height: 56px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Title */
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 48px;
+            letter-spacing: -0.3px;
+        }
+
+        /* Age section */
+        .age-section {
+            margin-bottom: 48px;
+        }
+
+        .age-label {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 16px;
+        }
+
+        .age-value {
+            font-size: 56px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            transition: color 0.2s;
+        }
+
+        /* Custom slider */
+        .slider-container {
+            position: relative;
+            padding: 0 4px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            transition: transform 0.15s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 28px;
+            height: 28px;
+            background: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* Result section */
+        .result-label {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 72px;
+            font-weight: 800;
+            color: #34c759;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 4px;
+            transition: color 0.3s;
+        }
+
+        .result-unit {
+            font-size: 18px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 32px;
+        }
+
+        /* Formula info */
+        .formula-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-top: 16px;
+        }
+
+        .formula-box p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .formula-box .formula {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Age quick-select dots */
+        .quick-select {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .quick-select button {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-select button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .quick-select button.active {
+            background: rgba(52, 199, 89, 0.2);
+            color: #34c759;
+        }
+
+        /* Cuffed toggle */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .toggle-label {
+            font-size: 15px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.2s;
+        }
+
+        .toggle-label.active {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #34c759;
+        }
+
+        .toggle-switch .knob {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .toggle-switch.active .knob {
+            transform: translateX(20px);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 32px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .result-value {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo">
+            <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+                <path d="M28 8C28 8 20 20 20 28C20 32.4183 23.5817 36 28 36C32.4183 36 36 32.4183 36 28C36 20 28 8 28 8Z"/>
+                <path d="M28 36V48"/>
+                <path d="M20 44H36"/>
+                <path d="M16 28H12" stroke-width="1.5"/>
+                <path d="M40 28H44" stroke-width="1.5"/>
+                <path d="M28 16V20" stroke-width="1.5"/>
+                <path d="M28 36V40" stroke-width="1.5"/>
+            </svg>
+        </div>
+
+        <h1>Tube Size Calculator</h1>
+
+        <!-- Cuffed / Uncuffed toggle -->
+        <div class="toggle-container">
+            <span class="toggle-label active" id="label-uncuffed">Uncuffed</span>
+            <div class="toggle-switch" id="cuffed-toggle">
+                <div class="knob"></div>
+            </div>
+            <span class="toggle-label" id="label-cuffed">Cuffed</span>
+        </div>
+
+        <!-- Age slider -->
+        <div class="age-section">
+            <div class="age-label">Leeftijd</div>
+            <div class="age-value" id="age-display">1</div>
+            <div class="slider-container">
+                <input type="range" id="age-slider" min="1" max="14" value="1" step="1">
+                <div class="slider-labels">
+                    <span>1</span>
+                    <span>14</span>
+                </div>
+            </div>
+            <div class="quick-select" id="quick-select"></div>
+        </div>
+
+        <!-- Result -->
+        <div class="result-label">Aanbevolen tube maat</div>
+        <div class="result-value" id="result">4.25</div>
+        <div class="result-unit">mm</div>
+
+        <!-- Formula info -->
+        <div class="formula-box">
+            <p>
+                Formule: <span class="formula" id="formula-display">(Leeftijd / 4) + 4</span>
+            </p>
+            <p style="margin-top: 4px; font-size: 12px; color: rgba(255,255,255,0.35);">
+                Cole's formule voor pediatrische tube maat
+            </p>
+        </div>
+
+        <div class="footer">
+            TubeCalc &mdash; voor medisch gebruik, altijd klinisch beoordelen
+        </div>
+    </div>
+
+    <script>
+        const slider = document.getElementById('age-slider');
+        const ageDisplay = document.getElementById('age-display');
+        const resultDisplay = document.getElementById('result');
+        const formulaDisplay = document.getElementById('formula-display');
+        const quickSelect = document.getElementById('quick-select');
+        const cuffedToggle = document.getElementById('cuffed-toggle');
+        const labelUncuffed = document.getElementById('label-uncuffed');
+        const labelCuffed = document.getElementById('label-cuffed');
+
+        let isCuffed = false;
+
+        // Build quick select buttons (1-14)
+        for (let i = 1; i <= 14; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            btn.dataset.age = i;
+            btn.addEventListener('click', () => {
+                slider.value = i;
+                update();
+            });
+            quickSelect.appendChild(btn);
+        }
+
+        // Cuffed toggle
+        cuffedToggle.addEventListener('click', () => {
+            isCuffed = !isCuffed;
+            cuffedToggle.classList.toggle('active', isCuffed);
+            labelUncuffed.classList.toggle('active', !isCuffed);
+            labelCuffed.classList.toggle('active', isCuffed);
+            update();
+        });
+
+        // Slider input
+        slider.addEventListener('input', update);
+
+        function update() {
+            const age = parseInt(slider.value);
+            ageDisplay.textContent = age;
+
+            // Cole's formula
+            // Uncuffed: (age / 4) + 4
+            // Cuffed:   (age / 4) + 3.5
+            const tubeSize = isCuffed ? (age / 4) + 3.5 : (age / 4) + 4;
+            const formatted = tubeSize.toFixed(2);
+            resultDisplay.textContent = formatted;
+
+            // Update formula display
+            const offset = isCuffed ? '3.5' : '4';
+            formulaDisplay.textContent = `(Leeftijd / 4) + ${offset}`;
+
+            // Highlight active quick-select button
+            document.querySelectorAll('.quick-select button').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.age) === age);
+            });
+
+            // Color the result based on value range
+            if (tubeSize < 4.5) {
+                resultDisplay.style.color = '#ff9500';  // orange - small
+            } else if (tubeSize > 6.5) {
+                resultDisplay.style.color = '#ff3b30';  // red - large
+            } else {
+                resultDisplay.style.color = '#34c759';  // green - normal range
+            }
+        }
+
+        // Initial update
+        update();
+    </script>
+</body>
+</html>
