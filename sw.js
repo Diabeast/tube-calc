@@ -1,5 +1,5 @@
-// TubeCalc Service Worker
-const CACHE = 'tubecalc-v1';
+// ArtAnest Service Worker
+const CACHE = 'artanest-v1';
 const URLS = [
   '.',
   'index.html',

@@ -1,6 +1,6 @@
 {
-  "name": "TubeCalc",
-  "short_name": "TubeCalc",
+  "name": "ArtAnest",
+  "short_name": "ArtAnest",
   "description": "Pediatrische Tube Size Calculator — Cole's formule",
   "start_url": ".",
   "display": "standalone",
