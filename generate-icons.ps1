@@ -22,7 +22,7 @@ function Draw-Syringe {
 
     $hx = $cx - [int](5*$s); $hy = $cy + [int](20*$s)
     $hw = [int](8*$s); $hh = [int](3*$s)
-    $hr = [int](3*$s)  # handle corner radius
+    $hr = [int](3*$s)
 
     $fl1x1 = $cx - [int](9*$s);  $fl1y = $cy + [int](2*$s);  $fl1x2 = $cx - [int](14*$s)
     $fl2x1 = $cx - [int](9*$s);  $fl2y = $cy + [int](6*$s);  $fl2x2 = $cx - [int](14*$s)
@@ -49,7 +49,7 @@ function Draw-Syringe {
     # Plunger rod
     $g.DrawLine($ww, $prx, $pry1, $prx, $pry2)
 
-    # Plunger handle (rounded rect via fill)
+    # Plunger handle
     $handle = new-object System.Drawing.Drawing2D.GraphicsPath
     $handle.AddArc($hx, $hy, $hr*2, $hr*2, 180, 90)
     $handle.AddArc($hx+$hw-$hr*2, $hy, $hr*2, $hr*2, 270, 90)
@@ -71,7 +71,7 @@ function Draw-Syringe {
     $g.DrawLine($lp, $lqx, $lqy, $lqx2, $lqy)
 }
 
-# ----- App Icon 512x512 -----
+# ----- App Icon 512x512 (behoudt gradient) -----
 Write-Host "Generating appicon.png..."
 $size = 512
 $bmp = new-object System.Drawing.Bitmap($size, $size)
@@ -81,7 +81,6 @@ $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
 $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
 $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
 
-# Clip rounded rect
 $cr = [int]($size * 0.195)
 $path = new-object System.Drawing.Drawing2D.GraphicsPath
 $path.AddArc(0, 0, $cr*2, $cr*2, 180, 90)
@@ -91,7 +90,6 @@ $path.AddArc(0, $size-$cr*2, $cr*2, $cr*2, 90, 90)
 $path.CloseFigure()
 $g.Clip = new-object System.Drawing.Region($path)
 
-# Gradient background
 $rect = new-object System.Drawing.Rectangle(0, 0, $size, $size)
 $brush = new-object System.Drawing.Drawing2D.LinearGradientBrush(
     $rect,
@@ -102,14 +100,13 @@ $brush = new-object System.Drawing.Drawing2D.LinearGradientBrush(
 $g.FillRectangle($brush, $rect)
 $g.ResetClip()
 
-# Syringe
 Draw-Syringe $g ($size/2) ($size/2) ($size/60.0)
 $g.Dispose()
 $bmp.Save("appicon.png", [System.Drawing.Imaging.ImageFormat]::Png)
 Write-Host "  -> appicon.png saved"
 
-# ----- Favicon 32x32 -----
-Write-Host "Generating favicon.png..."
+# ----- Favicon 32x32 — SIMPEL & STRAK -----
+Write-Host "Generating favicon.png (simpel & strak)..."
 $fsize = 32
 $fbmp = new-object System.Drawing.Bitmap($fsize, $fsize)
 $fbmp.SetResolution(96, 96)
@@ -118,18 +115,53 @@ $fg.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
 $fg.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
 $fg.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
 
-# Gradient background
-$frect = new-object System.Drawing.Rectangle(0, 0, $fsize, $fsize)
-$fbrush = new-object System.Drawing.Drawing2D.LinearGradientBrush(
-    $frect,
-    [System.Drawing.Color]::FromArgb(0, 122, 255),
-    [System.Drawing.Color]::FromArgb(52, 199, 89),
-    [System.Drawing.Drawing2D.LinearGradientMode]::ForwardDiagonal
-)
-$fg.FillRectangle($fbrush, $frect)
+# Solid background — geen gradient
+$bgColor = [System.Drawing.Color]::FromArgb(0, 122, 255)  # #007aff
+$fg.Clear($bgColor)
 
-# Syringe on favicon
-Draw-Syringe $fg ($fsize/2) ($fsize/2) ($fsize/60.0)
+# Witte syringe, dikkere lijnen voor kleine favicon
+Write-Host "  drawing favicon syringe..."
+$s = $fsize / 52.0  # scale factor
+
+$white = [System.Drawing.Color]::White
+$pw = new-object System.Drawing.Pen($white, [math]::Max(1.5, $s * 2.2))
+$pw.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
+$pw.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
+
+$cx = $fsize/2; $cy = $fsize/2 - 1
+
+# Needle
+$fg.DrawLine($pw, $cx+[int](6*$s), $cy-[int](10*$s), $cx+[int](11*$s), $cy-[int](5*$s))
+
+# Needle tip (filled triangle)
+$tip1x = $cx+[int](4*$s); $tip1y = $cy-[int](5*$s)
+$tip2x = $cx+[int](8*$s); $tip2y = $cy-[int](2*$s)
+$tip3x = $cx+[int](3*$s); $tip3y = $cy
+$tipPts2 = [System.Drawing.PointF[]]@(
+    (new-object System.Drawing.PointF($tip1x, $tip1y)),
+    (new-object System.Drawing.PointF($tip2x, $tip2y)),
+    (new-object System.Drawing.PointF($tip3x, $tip3y))
+)
+$fg.FillPolygon([System.Drawing.Brushes]::White, $tipPts2)
+
+# Barrel
+$bp2 = new-object System.Drawing.Pen($white, [math]::Max(1.2, $s * 1.8))
+$fg.DrawRectangle($bp2, $cx-[int](8*$s), $cy+[int](1*$s), [int](14*$s), [int](13*$s))
+
+# Plunger rod
+$fg.DrawLine($pw, $cx-[int](1*$s), $cy+[int](14*$s), $cx-[int](1*$s), $cy+[int](19*$s))
+
+# Plunger handle
+$fg.FillRectangle([System.Drawing.Brushes]::White, $cx-[int](4*$s), $cy+[int](18*$s), [int](6*$s), [int](3*$s))
+
+# Finger flanges
+$fw2 = new-object System.Drawing.Pen($white, [math]::Max(1.5, $s * 2.2))
+$fg.DrawLine($fw2, $cx-[int](8*$s), $cy+[int](2*$s), $cx-[int](12*$s), $cy+[int](2*$s))
+$fg.DrawLine($fw2, $cx-[int](8*$s), $cy+[int](5*$s), $cx-[int](12*$s), $cy+[int](5*$s))
+$fg.DrawLine($fw2, $cx+[int](6*$s), $cy+[int](2*$s), $cx+[int](10*$s), $cy+[int](2*$s))
+$fg.DrawLine($fw2, $cx+[int](6*$s), $cy+[int](5*$s), $cx+[int](10*$s), $cy+[int](5*$s))
+
+$fg.Dispose()
 $fbmp.Save("favicon.png", [System.Drawing.Imaging.ImageFormat]::Png)
 Write-Host "  -> favicon.png saved"
 
@@ -158,7 +190,6 @@ $icoStream.Flush()
 $icoWriter.Dispose()
 $icoStream.Dispose()
 $bmpStream.Dispose()
-$fg.Dispose()
 $fbmp.Dispose()
 $bmp.Dispose()
 Write-Host "  -> favicon.ico saved"
