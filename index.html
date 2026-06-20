@@ -1467,7 +1467,7 @@
             const concVal = concInput.value;
             if (isPropofol) {
                 if (!doseVal || doseVal === '10') doseInput.value = '6';
-                if (!concVal || concVal === '50') concInput.value = '20';
+                if (!concVal || concVal === '50') concInput.value = '10';
             } else {
                 if (!doseVal || doseVal === '6') doseInput.value = '10';
                 if (!concVal || concVal === '20') concInput.value = '50';
@@ -1528,7 +1528,7 @@
             document.getElementById('dos-weight').value = '';
             if (dosMedType === 'propofol') {
                 document.getElementById('dos-dose').value = '6';
-                document.getElementById('dos-conc').value = '20';
+                document.getElementById('dos-conc').value = '10';
             } else {
                 document.getElementById('dos-dose').value = '10';
                 document.getElementById('dos-conc').value = '50';
