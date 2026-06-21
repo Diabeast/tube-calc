@@ -780,6 +780,7 @@
             transition: background 0.3s;
         }
         .home-card:nth-child(2)::after { background: var(--accent); }
+        .home-card:nth-child(3)::after { background: var(--warning); }
         .home-card-icon {
             width: 64px; height: 64px;
             margin: 0 auto 16px;
@@ -790,6 +791,7 @@
         }
         .home-card-icon.tube { background: linear-gradient(135deg, #007aff, #5ac8fa); }
         .home-card-icon.tiva { background: linear-gradient(135deg, #34c759, #30d158); }
+        .home-card-icon.cefzol { background: linear-gradient(135deg, #ff9500, #ffcc00); }
         .home-card-icon svg { width: 30px; height: 30px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
         .home-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; color: var(--text-color); }
         .home-card p { font-size: 0.82rem; color: var(--subtext-color); line-height: 1.5; }
@@ -905,6 +907,13 @@
                     <path d="M5 21a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2"/>
                 </svg>
                 TIVA
+            </button>
+            <button class="menu-nav-item" onclick="switchView('cefzol')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v12M6 12h12"/>
+                </svg>
+                Cefzol kind
             </button>
             <button class="menu-nav-item" onclick="closeMenu(); openSettings();">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1034,6 +1043,25 @@
                 </div>
                 <h3>TIVA Calculator</h3>
                 <p>Infusiesnelheid voor propofol en remifentanil via spuitpomp</p>
+            </div>
+
+            <div class="home-card" onclick="switchView('cefzol')" role="button" tabindex="0">
+                <div class="home-card-icon cefzol">
+                    <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="5" x2="27" y2="10"/>
+                        <path d="M20 10 L24 13 L19 15 Z" fill="white" stroke="none"/>
+                        <rect x="9" y="14" width="13" height="12" rx="1.5"/>
+                        <line x1="15.5" y1="26" x2="15.5" y2="31" stroke-width="2"/>
+                        <rect x="12" y="30" width="7" height="2" rx="1" fill="white" stroke="none"/>
+                        <line x1="9" y1="15" x2="5" y2="15" stroke-width="2"/>
+                        <line x1="9" y1="18" x2="5" y2="18" stroke-width="2"/>
+                        <line x1="22" y1="15" x2="26" y2="15" stroke-width="2"/>
+                        <line x1="22" y1="18" x2="26" y2="18" stroke-width="2"/>
+                        <line x1="11.5" y1="21" x2="19.5" y2="21" opacity="0.5"/>
+                    </svg>
+                </div>
+                <h3>Cefzol kind</h3>
+                <p>Peri-operatieve Cefazoline dosering (30 mg/kg, max 2 gram)</p>
             </div>
         </div>
 
@@ -1346,6 +1374,112 @@
         <div class="footer">ArtAnest &copy; 2024 &mdash; voor medisch professionals</div>
     </div>
 
+    <!-- ============ CEFZOL VIEW ============ -->
+    <div class="container view" id="view-cefzol">
+
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-icon">
+                <svg viewBox="0 0 40 40" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="28" y1="6" x2="34" y2="12"/>
+                    <path d="M26 12 L30 16 L24 18 Z" fill="white" stroke="none"/>
+                    <rect x="12" y="17" width="16" height="15" rx="2"/>
+                    <line x1="20" y1="32" x2="20" y2="38" stroke-width="2"/>
+                    <rect x="16" y="37" width="8" height="3" rx="1.5" fill="white" stroke="none"/>
+                    <line x1="12" y1="19" x2="7" y2="19" stroke-width="2"/>
+                    <line x1="12" y1="23" x2="7" y2="23" stroke-width="2"/>
+                    <line x1="28" y1="19" x2="33" y2="19" stroke-width="2"/>
+                    <line x1="28" y1="23" x2="33" y2="23" stroke-width="2"/>
+                    <line x1="15" y1="27" x2="25" y2="27" opacity="0.5"/>
+                </svg>
+            </div>
+            <h1>Cefzol kind</h1>
+            <p>Cefazoline dosering — eenmalige peri-operatieve gift</p>
+        </div>
+
+        <!-- Input -->
+        <div class="card">
+            <div class="card-title">Parameters</div>
+
+            <div class="input-group">
+                <label for="cef-weight">Patiëntgewicht</label>
+                <div class="input-row">
+                    <button class="stepper-btn" onclick="cefStep(-0.5)" aria-label="Gewicht verlagen">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg>
+                    </button>
+                    <input type="number" id="cef-weight" min="0.1" max="300" step="0.5" placeholder="20" oninput="cefCalc()">
+                    <span class="input-unit">kg</span>
+                    <button class="stepper-btn" onclick="cefStep(0.5)" aria-label="Gewicht verhogen">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result -->
+        <div class="card result-card" id="cef-result-card">
+            <div class="result-label">Aanbevolen dosering Cefazoline</div>
+            <div class="result-value" id="cef-result">—</div>
+            <div class="result-unit" id="cef-result-unit">mg</div>
+            <div class="result-meta" id="cef-meta" style="display:none;">
+                <div class="result-meta-item">
+                    Dosering per kg
+                    <strong>30 mg/kg</strong>
+                </div>
+                <div class="result-meta-item">
+                    Maximaal
+                    <strong>2000 mg (2 g)</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details -->
+        <div class="card" id="cef-details" style="display:none;">
+            <div class="card-title">Berekening</div>
+            <div class="info-row">
+                <span class="info-label">Gewicht</span>
+                <span class="info-value" id="cef-b-weight">—</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Dosering</span>
+                <span class="info-value" id="cef-b-dose">30 mg/kg</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Berekende dosis</span>
+                <span class="info-value" id="cef-b-calc" style="color:var(--primary)">—</span>
+            </div>
+            <div class="info-row" id="cef-b-max-row" style="display:none;">
+                <span class="info-label" style="color:var(--warning);">⚠ Maximum toegepast</span>
+                <span class="info-value" id="cef-b-max" style="color:var(--warning);font-weight:700;">2000 mg</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label" style="font-weight:600;">Te geven dosis</span>
+                <span class="info-value" id="cef-b-final" style="color:var(--primary);font-weight:700;">—</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="btn-row">
+            <button class="btn btn-ghost" onclick="cefReset()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                Herstellen
+            </button>
+        </div>
+
+        <!-- Safety note -->
+        <div class="card" style="background: rgba(255,149,0,0.08); border-color: rgba(255,149,0,0.2);">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+                <span style="font-size:1.2rem;">⚠️</span>
+                <p style="font-size:0.8rem;color:var(--subtext-color);line-height:1.5;">
+                    Uitsluitend ter ondersteuning. Controleer altijd de berekening en raadpleeg het protocol.
+                    Klinische verantwoordelijkheid blijft bij de behandelaar.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">ArtAnest &copy; 2024 &mdash; voor medisch professionals</div>
+    </div>
+
     <script>
         // ============ STATE ============
         const CFG_KEY = 'artanest_settings';
@@ -1408,11 +1542,12 @@
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById('view-' + name).classList.add('active');
             document.querySelectorAll('.menu-nav-item').forEach(item => item.classList.remove('active'));
-            const tabMap = { home: 0, calculator: 1, info: 2, dosering: 3 };
+            const tabMap = { home: 0, calculator: 1, info: 2, dosering: 3, cefzol: 4 };
             document.querySelectorAll('.menu-nav-item')[tabMap[name]]?.classList.add('active');
             closeMenu();
             if (name === 'calculator') updateAll();
             if (name === 'dosering') dosCalc();
+            if (name === 'cefzol') cefCalc();
         }
 
         // ============ DOSERING CALCULATOR ============
@@ -1534,6 +1669,77 @@
                 document.getElementById('dos-conc').value = '50';
             }
             dosCalc();
+        }
+
+        // ============ CEFZOL CALCULATOR ============
+        const CEF_DOSE_PER_KG = 30;   // mg/kg
+        const CEF_MAX_DOSE = 2000;     // mg (2 gram)
+
+        function cefFmt(val) {
+            if (isNaN(val) || !isFinite(val)) return '—';
+            return val.toFixed(0);
+        }
+
+        function cefStep(step) {
+            const el = document.getElementById('cef-weight');
+            const current = parseFloat(el.value) || 0;
+            const min = parseFloat(el.min) || 0;
+            const max = parseFloat(el.max) || Infinity;
+            let next = current + step;
+            if (next < min) next = min;
+            if (next > max) next = max;
+            el.value = next;
+            cefCalc();
+            el.focus();
+        }
+
+        function cefCalc() {
+            const weight = parseFloat(document.getElementById('cef-weight').value);
+            const resultEl = document.getElementById('cef-result');
+            const resultUnit = document.getElementById('cef-result-unit');
+            const meta = document.getElementById('cef-meta');
+            const details = document.getElementById('cef-details');
+
+            if (!weight || weight <= 0) {
+                resultEl.textContent = '—';
+                resultEl.style.color = '';
+                resultUnit.textContent = 'Vul gewicht in';
+                meta.style.display = 'none';
+                details.style.display = 'none';
+                return;
+            }
+
+            const calculated = weight * CEF_DOSE_PER_KG;
+            const finalDose = Math.min(calculated, CEF_MAX_DOSE);
+            const maxApplied = calculated > CEF_MAX_DOSE;
+
+            // Result card
+            resultEl.style.color = 'var(--primary)';
+            resultEl.textContent = cefFmt(finalDose);
+            resultUnit.textContent = 'mg' + (maxApplied ? ' (max 2000 mg)' : '');
+
+            // Meta info
+            meta.style.display = 'flex';
+
+            // Details
+            document.getElementById('cef-b-weight').textContent = cefFmt(weight) + ' kg';
+            document.getElementById('cef-b-calc').textContent = cefFmt(weight) + ' × ' + CEF_DOSE_PER_KG + ' = ' + cefFmt(calculated) + ' mg';
+
+            const finalEl = document.getElementById('cef-b-final');
+            if (maxApplied) {
+                finalEl.textContent = cefFmt(finalDose) + ' mg (max)';
+                document.getElementById('cef-b-max-row').style.display = 'flex';
+            } else {
+                finalEl.textContent = cefFmt(finalDose) + ' mg';
+                document.getElementById('cef-b-max-row').style.display = 'none';
+            }
+
+            details.style.display = 'block';
+        }
+
+        function cefReset() {
+            document.getElementById('cef-weight').value = '';
+            cefCalc();
         }
 
         // ============ AGE GRID ============
