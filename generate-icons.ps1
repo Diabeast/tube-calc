@@ -1,33 +1,27 @@
 Add-Type -AssemblyName System.Drawing
 
-function Draw-MinimalSyringe {
+function Draw-AAMonogram {
     param([System.Drawing.Graphics]$g, [int]$cx, [int]$cy, [float]$s)
 
     $white = [System.Drawing.Color]::White
-    $pw = new-object System.Drawing.Pen($white, [math]::Max(1.5, $s * 2.0))
+    $pw = new-object System.Drawing.Pen($white, [math]::Max(2.0, $s * 32.0))
     $pw.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
     $pw.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
 
-    # Needle — diagonal line pointing up-right
-    $g.DrawLine($pw, $cx+[int](13*$s), $cy-[int](10*$s), $cx+[int](20*$s), $cy-[int](3*$s))
+    # Left A
+    $g.DrawLine($pw, $cx+[int](-166*$s), $cy+[int](174*$s), $cx+[int](-36*$s), $cy+[int](-186*$s))
+    $g.DrawLine($pw, $cx+[int](-36*$s), $cy+[int](-186*$s), $cx+[int](94*$s), $cy+[int](174*$s))
+    # Left A crossbar
+    $g.DrawLine($pw, $cx+[int](-126*$s), $cy+[int](54*$s), $cx+[int](54*$s), $cy+[int](54*$s))
 
-    # Barrel — simple rounded rectangle
-    $bp = new-object System.Drawing.Pen($white, [math]::Max(1.2, $s * 1.8))
-    $g.DrawRectangle($bp, $cx-[int](8*$s), $cy+[int](3*$s), [int](20*$s), [int](16*$s))
-
-    # Plunger rod
-    $g.DrawLine($pw, $cx+[int](2*$s), $cy+[int](19*$s), $cx+[int](2*$s), $cy+[int](27*$s))
-
-    # Plunger handle — simple filled rect
-    $g.FillRectangle([System.Drawing.Brushes]::White, $cx-[int](4*$s), $cy+[int](25*$s), [int](12*$s), [int](3*$s))
-
-    # Finger rests — two short lines on each side
-    $fw = new-object System.Drawing.Pen($white, [math]::Max(1.5, $s * 2.2))
-    $g.DrawLine($fw, $cx-[int](8*$s), $cy+[int](6*$s), $cx-[int](14*$s), $cy+[int](6*$s))
-    $g.DrawLine($fw, $cx+[int](12*$s), $cy+[int](6*$s), $cx+[int](18*$s), $cy+[int](6*$s))
+    # Right A
+    $g.DrawLine($pw, $cx+[int](-36*$s), $cy+[int](174*$s), $cx+[int](94*$s), $cy+[int](-186*$s))
+    $g.DrawLine($pw, $cx+[int](94*$s), $cy+[int](-186*$s), $cx+[int](224*$s), $cy+[int](174*$s))
+    # Right A crossbar
+    $g.DrawLine($pw, $cx+[int](4*$s), $cy+[int](54*$s), $cx+[int](184*$s), $cy+[int](54*$s))
 }
 
-# ----- App Icon 512x512 (behoudt gradient) -----
+# ----- App Icon 512x512 -----
 Write-Host "Generating appicon.png..."
 $size = 512
 $bmp = new-object System.Drawing.Bitmap($size, $size)
@@ -56,13 +50,13 @@ $brush = new-object System.Drawing.Drawing2D.LinearGradientBrush(
 $g.FillRectangle($brush, $rect)
 $g.ResetClip()
 
-Draw-MinimalSyringe $g ($size/2) ($size/2) ($size/65.0)
+Draw-AAMonogram $g ($size/2) ($size/2) ($size/512.0)
 $g.Dispose()
 $bmp.Save("appicon.png", [System.Drawing.Imaging.ImageFormat]::Png)
 Write-Host "  -> appicon.png saved"
 
-# ----- Favicon 32x32 — SIMPEL & STRAK -----
-Write-Host "Generating favicon.png (simpel & strak)..."
+# ----- Favicon 32x32 -----
+Write-Host "Generating favicon.png..."
 $fsize = 32
 $fbmp = new-object System.Drawing.Bitmap($fsize, $fsize)
 $fbmp.SetResolution(96, 96)
@@ -81,9 +75,7 @@ $fbrush = new-object System.Drawing.Drawing2D.LinearGradientBrush(
 )
 $fg.FillRectangle($fbrush, $frect)
 
-# Zelfde syringe als appicon (via Draw-Syringe)
-Write-Host "  drawing favicon syringe..."
-Draw-MinimalSyringe $fg ($fsize/2) ($fsize/2) ($fsize/65.0)
+Draw-AAMonogram $fg ($fsize/2) ($fsize/2) ($fsize/512.0)
 $fg.Dispose()
 $fbmp.Save("favicon.png", [System.Drawing.Imaging.ImageFormat]::Png)
 Write-Host "  -> favicon.png saved"

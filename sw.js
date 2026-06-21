@@ -1,5 +1,5 @@
 // ArtAnest Service Worker
-const CACHE = 'artanest-v2';
+const CACHE = 'artanest-v3';
 const URLS = [
   '.',
   'index.html',
