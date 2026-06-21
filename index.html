@@ -752,14 +752,14 @@
 
         .home-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
             margin-top: 28px;
         }
         .home-card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 36px 20px 32px;
+            border-radius: 18px;
+            padding: 24px 12px 20px;
             text-align: center;
             cursor: pointer;
             border: var(--card-border);
@@ -784,9 +784,9 @@
         .home-card:nth-child(2)::after { background: var(--accent); }
         .home-card:nth-child(3)::after { background: var(--warning); }
         .home-card-icon {
-            width: 64px; height: 64px;
-            margin: 0 auto 16px;
-            border-radius: 18px;
+            width: 56px; height: 56px;
+            margin: 0 auto 12px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -794,9 +794,9 @@
         .home-card-icon.tube { background: linear-gradient(135deg, #007aff, #5ac8fa); }
         .home-card-icon.tiva { background: linear-gradient(135deg, #34c759, #30d158); }
         .home-card-icon.cefzol { background: linear-gradient(135deg, #ff9500, #ffcc00); }
-        .home-card-icon svg { width: 30px; height: 30px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-        .home-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; color: var(--text-color); }
-        .home-card p { font-size: 0.82rem; color: var(--subtext-color); line-height: 1.5; }
+        .home-card-icon svg { width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        .home-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; color: var(--text-color); }
+        .home-card p { font-size: 0.72rem; color: var(--subtext-color); line-height: 1.4; }
 
         .home-subtitle {
             text-align: center;
@@ -806,10 +806,14 @@
             opacity: 0.6;
         }
 
-        @media (max-width: 400px) {
-            .home-grid { grid-template-columns: 1fr; }
+        @media (max-width: 420px) {
+            .home-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
             .home-hero h1 { font-size: 26px; }
-            .home-card { padding: 28px 16px 24px; }
+            .home-card { padding: 20px 10px 16px; }
+            .home-card-icon { width: 48px; height: 48px; border-radius: 14px; }
+            .home-card-icon svg { width: 22px; height: 22px; }
+            .home-card h3 { font-size: 0.85rem; }
+            .home-card p { font-size: 0.65rem; }
         }
 
         /* ============ RESPONSIVE ============ */
@@ -965,6 +969,18 @@
                 <div class="settings-row">
                     <span class="settings-row-label">Standaard leeftijd</span>
                     <input class="settings-row-input" type="number" id="sett-default-age" min="1" max="14" step="1" placeholder="1">
+                </div>
+            </div>
+
+            <div class="settings-section-title">Cefzol kind</div>
+            <div class="settings-group">
+                <div class="settings-row">
+                    <span class="settings-row-label">Dosering</span>
+                    <span class="settings-row-info" style="font-size:0.9rem;color:var(--subtext-color);text-align:right;flex:1;">30 mg/kg</span>
+                </div>
+                <div class="settings-row">
+                    <span class="settings-row-label">Maximum</span>
+                    <span class="settings-row-info" style="font-size:0.9rem;color:var(--subtext-color);text-align:right;flex:1;">2000 mg (2 g)</span>
                 </div>
             </div>
 
