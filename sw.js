@@ -1,10 +1,12 @@
 // ArtAnest Service Worker
-const CACHE = 'artanest-v1';
+const CACHE = 'artanest-v2';
 const URLS = [
   '.',
   'index.html',
   'manifest.json',
-  'appicon.png'
+  'appicon.png',
+  'favicon.png',
+  'favicon.ico'
 ];
 
 self.addEventListener('install', event => {
@@ -18,7 +20,7 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => Promise.all(
       keys.filter(k => k !== CACHE).map(k => caches.delete(k))
-    ))
+    )).then(() => self.clients.claim())
   );
 });
 
