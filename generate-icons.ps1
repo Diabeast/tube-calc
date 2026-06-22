@@ -37,7 +37,7 @@ $white = new-object System.Drawing.SolidBrush([System.Drawing.Color]::White)
 $fmt = new-object System.Drawing.StringFormat
 $fmt.Alignment = [System.Drawing.StringAlignment]::Center
 $fmt.LineAlignment = [System.Drawing.StringAlignment]::Center
-$g.DrawString("A", $font, $white, ($size/2), ($size/2)+8, $fmt)
+$g.DrawString("a", $font, $white, ($size/2), ($size/2)+8, $fmt)
 $font.Dispose()
 $white.Dispose()
 $fmt.Dispose()
@@ -71,7 +71,7 @@ $fwhite = new-object System.Drawing.SolidBrush([System.Drawing.Color]::White)
 $ffmt = new-object System.Drawing.StringFormat
 $ffmt.Alignment = [System.Drawing.StringAlignment]::Center
 $ffmt.LineAlignment = [System.Drawing.StringAlignment]::Center
-$fg.DrawString("A", $ffont, $fwhite, ($fsize/2), ($fsize/2)+1, $ffmt)
+$fg.DrawString("a", $ffont, $fwhite, ($fsize/2), ($fsize/2)+1, $ffmt)
 $ffont.Dispose()
 $fwhite.Dispose()
 $ffmt.Dispose()
