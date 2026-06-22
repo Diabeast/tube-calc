@@ -19,7 +19,7 @@
 
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="ArtAnest">
-    <meta property="og:description" content="Anesthesie calculators: tube maat (Cole), TIVA infusiesnelheid en Cefazoline dosering.">
+    <meta property="og:description" content="TIVA, Kefzol en Tube calculators voor de anesthesie — propofol/remifentanil pompstand, cefazoline dosering, Cole's tube maat.">
     <meta property="og:image" content="https://diabeast.github.io/tube-calc/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -27,7 +27,7 @@
     <meta property="og:url" content="https://diabeast.github.io/tube-calc/">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ArtAnest">
-    <meta name="twitter:description" content="Pediatrische Tube Size Calculator — Cole's formule">
+    <meta name="twitter:description" content="TIVA, Kefzol en Tube calculators voor de anesthesie — propofol/remifentanil pompstand, cefazoline dosering, Cole's tube maat.">
     <meta name="twitter:image" content="https://diabeast.github.io/tube-calc/og-image.png">
 
     <style>
@@ -704,16 +704,6 @@
             opacity: 1;
             margin-top: 2px;
         }
-        .dosering-breakdown .info-row:last-child {
-            background: rgba(0,122,255,0.06);
-            border-radius: 0 0 12px 12px;
-            margin: 0 -16px -16px;
-            padding: 12px 16px;
-        }
-        .dosering-breakdown .info-row:last-child .info-value {
-            color: var(--primary);
-            font-size: 1rem;
-        }
         .btn-row {
             display: flex;
             gap: 8px;
@@ -747,14 +737,6 @@
             color: #fff;
         }
         .btn-primary:hover { opacity: 0.9; }
-        .dosering-highlight {
-            background: rgba(0,122,255,0.06);
-            border-radius: 12px;
-            padding: 16px;
-            margin: 12px 0;
-        }
-        .dosering-highlight .info-row { border-bottom-color: rgba(0,122,255,0.1); }
-
         /* ============ HOME PAGE ============ */
         .home-hero { text-align: center; padding: 40px 16px 8px; }
         .home-hero .hero-icon {
@@ -780,7 +762,7 @@
 
         .home-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 14px;
             margin-top: 28px;
         }
@@ -826,70 +808,20 @@
         }
         .home-card-icon.tube { background: linear-gradient(135deg, #007aff, #5ac8fa); }
         .home-card-icon.tiva { background: linear-gradient(135deg, #34c759, #30d158); }
+        .home-card-icon.kefzol { background: linear-gradient(135deg, #ff9500, #ffcc00); }
         .home-card-icon svg { width: 30px; height: 30px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+        .tiva-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .tiva-grid .card { margin-bottom: 0; }
+        .tiva-grid .result-value { font-size: 1.8rem; }
+        .tiva-meta { margin-top: 12px; display: flex; flex-direction: column; gap: 4px; }
+        .tiva-meta .result-meta-item { font-size: 0.75rem; color: var(--subtext-color); display: flex; justify-content: space-between; }
         .home-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: var(--text-color); }
         .home-card p { font-size: 0.78rem; color: var(--subtext-color); line-height: 1.4; margin-top: auto; }
-        .home-card-banner {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 28px 20px;
-            cursor: pointer;
-            border: var(--card-border);
-            box-shadow: var(--card-shadow);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-top: 14px;
-            min-height: 170px;
-        }
-        .home-card-banner::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: var(--warning);
-        }
-        .home-card-banner:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-        }
-        .home-card-banner:active { transform: scale(0.99); }
-        .home-card-banner-icon {
-            width: 52px; height: 52px;
-            flex-shrink: 0;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #ff9500, #ffcc00);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .home-card-banner-icon svg {
-            width: 26px; height: 26px;
-            stroke: #fff; fill: none; stroke-width: 1.5;
-            stroke-linecap: round; stroke-linejoin: round;
-        }
-        .home-card-banner-text { flex: 1; text-align: left; }
-        .home-card-banner-text h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 2px;
-        }
-        .home-card-banner-text p {
-            font-size: 0.78rem;
-            color: var(--subtext-color);
-            line-height: 1.4;
-        }
-        .home-card-banner-arrow {
-            flex-shrink: 0;
-            color: var(--subtext-color);
-            opacity: 0.5;
-        }
-        .home-card-banner-arrow svg { width: 20px; height: 20px; }
-
         .home-subtitle {
             text-align: center;
             font-size: 0.85rem;
@@ -906,12 +838,6 @@
             .home-card-icon svg { width: 24px; height: 24px; }
             .home-card h3 { font-size: 0.95rem; }
             .home-card p { font-size: 0.7rem; }
-            .home-card-banner { padding: 16px 18px; gap: 12px; min-height: 140px; }
-            .home-card-banner-icon { width: 44px; height: 44px; }
-            .home-card-banner-icon svg { width: 22px; height: 22px; }
-            .home-card-banner-text h3 { font-size: 0.9rem; }
-            .home-card-banner-text p { font-size: 0.7rem; }
-            .home-card-banner-arrow { display: none; }
         }
 
         /* ============ RESPONSIVE ============ */
@@ -1018,12 +944,12 @@
                 </svg>
                 TIVA
             </button>
-            <button class="menu-nav-item" onclick="switchView('cefzol')">
+            <button class="menu-nav-item" onclick="switchView('kefzol')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"/>
                     <path d="M12 6v12M6 12h12"/>
                 </svg>
-                Cefzol kind
+                Kefzol kind
             </button>
             <button class="menu-nav-item" onclick="closeMenu(); openSettings();">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1076,7 +1002,7 @@
                 </div>
             </div>
 
-            <div class="settings-section-title">Cefzol kind</div>
+            <div class="settings-section-title">Kefzol kind</div>
             <div class="settings-group">
                 <div class="settings-row">
                     <span class="settings-row-label">Dosering</span>
@@ -1123,17 +1049,6 @@
 
         <!-- Option cards -->
         <div class="home-grid">
-            <div class="home-card" onclick="switchView('calculator')" role="button" tabindex="0">
-                <div class="home-card-icon tube">
-                    <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="9" y="3" width="14" height="4" rx="1.5"/>
-                        <path d="M11 7 L21 7 L21 22 L16 26 L11 22 Z"/>
-                    </svg>
-                </div>
-                <h3>Tube Calculator</h3>
-                <p>Cole's formule voor pediatrische tube maat (0–14 jaar)</p>
-            </div>
-
             <div class="home-card" onclick="switchView('dosering')" role="button" tabindex="0">
                 <div class="home-card-icon tiva">
                     <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1146,26 +1061,28 @@
                     </svg>
                 </div>
                 <h3>TIVA Calculator</h3>
-                <p>Infusiesnelheid voor propofol en remifentanil via spuitpomp</p>
+                <p>Propofol en remifentanil pompstand via spuitpomp</p>
             </div>
 
-        </div>
-
-        <!-- Cefzol — full-width banner -->
-        <div class="home-card-banner" onclick="switchView('cefzol')" role="button" tabindex="0">
-            <div class="home-card-banner-icon">
-                <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 4 C16 4 7 15 7 21 C7 26 11 29 16 29 C21 29 25 26 25 21 C25 15 16 4 16 4 Z"/>
-                </svg>
-            </div>
-            <div class="home-card-banner-text">
-                <h3>Cefzol kind</h3>
+            <div class="home-card" onclick="switchView('kefzol')" role="button" tabindex="0">
+                <div class="home-card-icon kefzol">
+                    <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 4 C16 4 7 15 7 21 C7 26 11 29 16 29 C21 29 25 26 25 21 C25 15 16 4 16 4 Z"/>
+                    </svg>
+                </div>
+                <h3>Kefzol Calculator Kind</h3>
                 <p>Cefazoline dosering (30 mg/kg, max 2 gram)</p>
             </div>
-            <div class="home-card-banner-arrow">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 18l6-6-6-6"/>
-                </svg>
+
+            <div class="home-card" onclick="switchView('calculator')" role="button" tabindex="0">
+                <div class="home-card-icon tube">
+                    <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="3" width="14" height="4" rx="1.5"/>
+                        <path d="M11 7 L21 7 L21 22 L16 26 L11 22 Z"/>
+                    </svg>
+                </div>
+                <h3>Tube Calculator</h3>
+                <p>Cole's formule voor pediatrische tube maat (0–14 jaar)</p>
             </div>
         </div>
 
@@ -1299,7 +1216,7 @@
         <div class="footer">ArtAnest &copy; 2024 &mdash; voor medisch professionals</div>
     </div>
 
-    <!-- ============ DOSERING VIEW ============ -->
+    <!-- ============ TIVA VIEW ============ -->
     <div class="container view" id="view-dosering">
 
         <!-- Hero -->
@@ -1314,122 +1231,58 @@
                     <line x1="31" y1="19" x2="36" y2="19" stroke-width="2"/>
                 </svg>
             </div>
-            <h1>Pompsnelheid Calculator</h1>
-            <p>Infusiesnelheid voor medicatie via spuitpomp</p>
+            <h1>TIVA Calculator</h1>
+            <p>Pompsnelheid voor propofol en remifentanil via spuitpomp</p>
         </div>
 
-        <!-- Medication Type -->
-        <div class="card">
-            <div class="formula-tabs" id="dos-meds-tabs">
-                <button class="formula-tab active" data-type="propofol" onclick="setDosMeds('propofol')">Propofol</button>
-                <button class="formula-tab" data-type="remifentanil" onclick="setDosMeds('remifentanil')">Remifentanil</button>
-            </div>
-        </div>
-
-        <!-- Formula banner (hidden) -->
-        <div class="card" id="dos-formula-card" style="display:none;">
-            <div class="formula-banner">
-                <div class="formula-title">Formule</div>
-                <div class="formula-eq" id="dos-formula-eq">ml/h = (dosis [µg/kg/h] × gewicht [kg]) ÷ concentratie [µg/ml]</div>
-            </div>
-        </div>
-
-        <!-- Input card -->
+        <!-- Weight input -->
         <div class="card">
             <div class="card-title">Parameters</div>
-
             <div class="input-group">
-                <label for="dos-weight">Patiëntgewicht</label>
+                <label for="tiva-weight">Patiëntgewicht</label>
                 <div class="input-row">
-                    <button class="stepper-btn" onclick="dosStep('dos-weight', -0.5)" aria-label="Gewicht verlagen">
+                    <button class="stepper-btn" onclick="tivaStep(-0.5)" aria-label="Gewicht verlagen">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg>
                     </button>
-                    <input type="number" id="dos-weight" min="0.1" max="300" step="0.5" placeholder="70" oninput="dosCalc()">
+                    <input type="number" id="tiva-weight" min="0.1" max="300" step="0.5" placeholder="70" oninput="tivaCalc()">
                     <span class="input-unit">kg</span>
-                    <button class="stepper-btn" onclick="dosStep('dos-weight', 0.5)" aria-label="Gewicht verhogen">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="dos-dose" id="dos-dose-label">Voorgeschreven dosering</label>
-                <div class="input-row">
-                    <button class="stepper-btn" onclick="dosStep('dos-dose', -1)" aria-label="Dosering verlagen">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg>
-                    </button>
-                    <input type="number" id="dos-dose" min="0.01" max="10000" step="1" value="10" oninput="dosCalc()">
-                    <span class="input-unit" id="dos-dose-unit">µg/kg/h</span>
-                    <button class="stepper-btn" onclick="dosStep('dos-dose', 1)" aria-label="Dosering verhogen">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="dos-conc" id="dos-conc-label">Concentratie spuit</label>
-                <div class="input-row">
-                    <button class="stepper-btn" onclick="dosStep('dos-conc', -5)" aria-label="Concentratie verlagen">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg>
-                    </button>
-                    <input type="number" id="dos-conc" min="0.01" max="10000" step="5" value="50" oninput="dosCalc()">
-                    <span class="input-unit" id="dos-conc-unit">µg/ml</span>
-                    <button class="stepper-btn" onclick="dosStep('dos-conc', 5)" aria-label="Concentratie verhogen">
+                    <button class="stepper-btn" onclick="tivaStep(0.5)" aria-label="Gewicht verhogen">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Result -->
-        <div class="card result-card" id="dos-result-card">
-            <div class="result-label">Pompsnelheid instellen op</div>
-            <div class="result-value" id="dos-result">—</div>
-            <div class="result-unit" id="dos-result-unit">ml/uur</div>
-            <div class="result-meta" id="dos-meta" style="display:none;">
-                <div class="result-meta-item">
-                    Totale dosis/uur
-                    <strong id="dos-meta-dose">—</strong>
-                </div>
-                <div class="result-meta-item">
-                    Dosis/minuut
-                    <strong id="dos-meta-min">—</strong>
-                </div>
-                <div class="result-meta-item">
-                    Volume/24u
-                    <strong id="dos-meta-vol">—</strong>
+        <!-- Results: Propofol + Remifentanil -->
+        <div class="tiva-grid">
+            <!-- Propofol -->
+            <div class="card result-card" id="tiva-prop-card">
+                <div class="card-title" style="color:var(--primary);">Propofol</div>
+                <div class="result-label">Pompsnelheid</div>
+                <div class="result-value" id="tiva-prop-result" style="color:var(--primary);">—</div>
+                <div class="result-unit" id="tiva-prop-unit">ml/uur</div>
+                <div class="tiva-meta" id="tiva-prop-meta" style="display:none;">
+                    <div class="result-meta-item">Dosis <strong id="tiva-prop-dose">—</strong></div>
+                    <div class="result-meta-item">Concentratie <strong id="tiva-prop-conc">—</strong></div>
                 </div>
             </div>
-        </div>
 
-        <!-- Breakdown -->
-        <div class="card dosering-breakdown" id="dos-breakdown" style="display:none;">
-            <div class="card-title">Berekeningsstappen</div>
-            <div class="info-row">
-                <span class="info-label">Gewicht patiënt</span>
-                <span class="info-value" id="dos-b-weight">—</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Voorgeschreven dosering</span>
-                <span class="info-value" id="dos-b-dose">—</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Totale dosis per uur</span>
-                <span class="info-value" id="dos-b-total" style="color:var(--primary)">—</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Concentratie spuit</span>
-                <span class="info-value" id="dos-b-conc">—</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label" style="font-weight:600;">Pompsnelheid</span>
-                <span class="info-value" id="dos-b-result" style="color:var(--primary);font-weight:700;">—</span>
+            <!-- Remifentanil -->
+            <div class="card result-card" id="tiva-remi-card">
+                <div class="card-title" style="color:var(--accent);">Remifentanil</div>
+                <div class="result-label">Pompsnelheid</div>
+                <div class="result-value" id="tiva-remi-result" style="color:var(--accent);">—</div>
+                <div class="result-unit" id="tiva-remi-unit">ml/uur</div>
+                <div class="tiva-meta" id="tiva-remi-meta" style="display:none;">
+                    <div class="result-meta-item">Dosis <strong id="tiva-remi-dose">—</strong></div>
+                    <div class="result-meta-item">Concentratie <strong id="tiva-remi-conc">—</strong></div>
+                </div>
             </div>
         </div>
 
         <!-- Actions -->
         <div class="btn-row">
-            <button class="btn btn-ghost" onclick="dosReset()">
+            <button class="btn btn-ghost" onclick="tivaReset()">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                 Herstellen
             </button>
@@ -1438,8 +1291,8 @@
         <div class="footer">ArtAnest &copy; 2024 &mdash; voor medisch professionals</div>
     </div>
 
-    <!-- ============ CEFZOL VIEW ============ -->
-    <div class="container view" id="view-cefzol">
+    <!-- ============ KEFZOL VIEW ============ -->
+    <div class="container view" id="view-kefzol">
 
         <!-- Hero -->
         <div class="hero">
@@ -1448,8 +1301,8 @@
                     <path d="M20 4 C20 4 9 18 9 26 C9 32 14 36 20 36 C26 36 31 32 31 26 C31 18 20 4 20 4 Z"/>
                 </svg>
             </div>
-            <h1>Cefzol kind</h1>
-            <p>Cefazoline dosering — eenmalige peri-operatieve gift</p>
+            <h1>Kefzol Calculator Kind</h1>
+            <p>Cefazoline dosering (30 mg/kg, max 2 gram)</p>
         </div>
 
         <!-- Input -->
@@ -1598,12 +1451,12 @@
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById('view-' + name).classList.add('active');
             document.querySelectorAll('.menu-nav-item').forEach(item => item.classList.remove('active'));
-            const tabMap = { home: 0, calculator: 1, info: 2, dosering: 3, cefzol: 4 };
+            const tabMap = { home: 0, calculator: 1, info: 2, dosering: 3, kefzol: 4 };
             document.querySelectorAll('.menu-nav-item')[tabMap[name]]?.classList.add('active');
             closeMenu();
             if (name === 'calculator') updateAll();
-            if (name === 'dosering') dosCalc();
-            if (name === 'cefzol') cefCalc();
+            if (name === 'dosering') tivaCalc();
+            if (name === 'kefzol') cefCalc();
             // Show/hide back button
             document.getElementById('back-btn').style.display = name === 'home' ? 'none' : 'flex';
         }
@@ -1613,16 +1466,15 @@
             switchView(target, false);
         }
 
-        // ============ DOSERING CALCULATOR ============
-        let dosMedType = 'propofol';
+        // ============ TIVA CALCULATOR ============
 
-        function dosFmt(val, decimals) {
+        function tivaFmt(val, decimals) {
             if (isNaN(val) || !isFinite(val)) return '—';
             return val.toFixed(decimals).replace('.', ',');
         }
 
-        function dosStep(id, step) {
-            const el = document.getElementById(id);
+        function tivaStep(step) {
+            const el = document.getElementById('tiva-weight');
             const current = parseFloat(el.value) || 0;
             const min = parseFloat(el.min) || 0;
             const max = parseFloat(el.max) || Infinity;
@@ -1630,108 +1482,62 @@
             if (next < min) next = min;
             if (next > max) next = max;
             el.value = next;
-            dosCalc();
+            tivaCalc();
             el.focus();
         }
 
-        function setDosMeds(type) {
-            dosMedType = type;
-            const isPropofol = type === 'propofol';
-            const unit = isPropofol ? 'mg' : 'µg';
-            const drugName = isPropofol ? 'Propofol' : 'Remifentanil';
+        function tivaCalc() {
+            const weight = parseFloat(document.getElementById('tiva-weight').value);
 
-            // Update tabs
-            document.querySelectorAll('#dos-meds-tabs .formula-tab').forEach(t => {
-                t.classList.toggle('active', t.dataset.type === type);
-            });
+            const propResult = document.getElementById('tiva-prop-result');
+            const propUnit = document.getElementById('tiva-prop-unit');
+            const propMeta = document.getElementById('tiva-prop-meta');
 
-            // Update formula text (banner blijft verborgen)
-            document.getElementById('dos-formula-eq').textContent = 'ml/h = (dosis [' + unit + '/kg/h] × gewicht [kg]) ÷ concentratie [' + unit + '/ml]';
+            const remiResult = document.getElementById('tiva-remi-result');
+            const remiUnit = document.getElementById('tiva-remi-unit');
+            const remiMeta = document.getElementById('tiva-remi-meta');
 
-            // Update labels and units
-            document.getElementById('dos-dose-label').textContent = drugName + ' dosering';
-            document.getElementById('dos-dose-unit').textContent = unit + '/kg/h';
-            document.getElementById('dos-conc-label').textContent = 'Concentratie ' + drugName.toLowerCase();
-            document.getElementById('dos-conc-unit').textContent = unit + '/ml';
-
-            // Update step and defaults
-            const doseInput = document.getElementById('dos-dose');
-            const concInput = document.getElementById('dos-conc');
-            doseInput.step = isPropofol ? '0.5' : '1';
-            concInput.step = isPropofol ? '1' : '5';
-
-            // Set defaults (swap between propofol & remifentanil values)
-            const doseVal = doseInput.value;
-            const concVal = concInput.value;
-            if (isPropofol) {
-                if (!doseVal || doseVal === '10') doseInput.value = '6';
-                if (!concVal || concVal === '50') concInput.value = '10';
-            } else {
-                if (!doseVal || doseVal === '6') doseInput.value = '10';
-                if (!concVal || concVal === '20') concInput.value = '50';
-            }
-
-            dosCalc();
-        }
-
-        function dosCalc() {
-            const weight = parseFloat(document.getElementById('dos-weight').value);
-            const dosePerKg = parseFloat(document.getElementById('dos-dose').value);
-            const concentration = parseFloat(document.getElementById('dos-conc').value);
-            const isPropofol = dosMedType === 'propofol';
-            const unit = isPropofol ? 'mg' : 'µg';
-
-            const resultEl = document.getElementById('dos-result');
-            const resultUnit = document.getElementById('dos-result-unit');
-            const meta = document.getElementById('dos-meta');
-            const breakdown = document.getElementById('dos-breakdown');
-
-            if (!weight || !dosePerKg || !concentration || weight <= 0 || dosePerKg <= 0 || concentration <= 0) {
-                resultEl.textContent = '—';
-                resultEl.style.color = '';
-                resultUnit.textContent = 'Vul alle velden in';
-                meta.style.display = 'none';
-                breakdown.style.display = 'none';
+            if (!weight || weight <= 0) {
+                propResult.textContent = '—';
+                propResult.style.color = '';
+                propUnit.textContent = 'Vul gewicht in';
+                propMeta.style.display = 'none';
+                remiResult.textContent = '—';
+                remiResult.style.color = '';
+                remiUnit.textContent = '';
+                remiMeta.style.display = 'none';
                 return;
             }
 
-            const totalDosePerHour = dosePerKg * weight;
-            const mlPerHour = totalDosePerHour / concentration;
-            const dosePerMin = totalDosePerHour / 60;
-            const volPer24h = mlPerHour * 24;
+            // Propofol: 6 mg/kg/h at 10 mg/ml
+            const propDose = 6; // mg/kg/h
+            const propConc = 10; // mg/ml
+            const propMlPerHour = (propDose * weight) / propConc;
 
-            // Color code
-            resultEl.style.color = 'var(--accent)';
+            propResult.textContent = tivaFmt(propMlPerHour, 1) + '';
+            propResult.style.color = 'var(--primary)';
+            propUnit.textContent = 'ml/uur';
+            document.getElementById('tiva-prop-dose').textContent = '6 mg/kg/h';
+            document.getElementById('tiva-prop-conc').textContent = '10 mg/ml';
+            propMeta.style.display = 'flex';
 
-            // Result
-            resultEl.textContent = dosFmt(mlPerHour, 2);
-            resultUnit.textContent = 'ml/uur';
+            // Remifentanil: 0.5 µg/kg/min = 30 µg/kg/h at 50 µg/ml
+            const remiDosePerMin = 0.5; // µg/kg/min
+            const remiDosePerHour = remiDosePerMin * 60; // 30 µg/kg/h
+            const remiConc = 50; // µg/ml
+            const remiMlPerHour = (remiDosePerHour * weight) / remiConc;
 
-            // Meta
-            document.getElementById('dos-meta-dose').textContent = dosFmt(totalDosePerHour, 1) + ' ' + unit + '/h';
-            document.getElementById('dos-meta-min').textContent = dosFmt(dosePerMin, 2) + ' ' + unit + '/min';
-            document.getElementById('dos-meta-vol').textContent = dosFmt(volPer24h, 1) + ' ml';
-            meta.style.display = 'flex';
-
-            // Breakdown
-            document.getElementById('dos-b-weight').textContent = dosFmt(weight, 1) + ' kg';
-            document.getElementById('dos-b-dose').textContent = dosFmt(dosePerKg, 2) + ' ' + unit + '/kg/h';
-            document.getElementById('dos-b-total').textContent = dosFmt(weight, 1) + ' × ' + dosFmt(dosePerKg, 2) + ' = ' + dosFmt(totalDosePerHour, 2) + ' ' + unit + '/h';
-            document.getElementById('dos-b-conc').textContent = dosFmt(concentration, 1) + ' ' + unit + '/ml';
-            document.getElementById('dos-b-result').textContent = dosFmt(totalDosePerHour, 2) + ' ÷ ' + dosFmt(concentration, 1) + ' = ' + dosFmt(mlPerHour, 2) + ' ml/h';
-            breakdown.style.display = 'block';
+            remiResult.textContent = tivaFmt(remiMlPerHour, 1) + '';
+            remiResult.style.color = 'var(--accent)';
+            remiUnit.textContent = 'ml/uur';
+            document.getElementById('tiva-remi-dose').textContent = '0,5 µg/kg/min';
+            document.getElementById('tiva-remi-conc').textContent = '50 µg/ml';
+            remiMeta.style.display = 'flex';
         }
 
-        function dosReset() {
-            document.getElementById('dos-weight').value = '';
-            if (dosMedType === 'propofol') {
-                document.getElementById('dos-dose').value = '6';
-                document.getElementById('dos-conc').value = '10';
-            } else {
-                document.getElementById('dos-dose').value = '10';
-                document.getElementById('dos-conc').value = '50';
-            }
-            dosCalc();
+        function tivaReset() {
+            document.getElementById('tiva-weight').value = '';
+            tivaCalc();
         }
 
         // ============ CEFZOL CALCULATOR ============
