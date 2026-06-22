@@ -4,8 +4,8 @@ const URLS = [
   '.',
   'index.html',
   'manifest.json',
-  'logoanest.png',
-  'anestbanner.png'
+  'favicongoed.png',
+  'banner.png'
 ];
 
 self.addEventListener('install', event => {

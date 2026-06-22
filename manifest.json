@@ -9,10 +9,10 @@
   "orientation": "portrait",
    "icons": [
      {
-"src": "logoanest.png",
+        "src": "favicongoed.png",
         "sizes": "1024x1024",
-       "type": "image/png",
-       "purpose": "any maskable"
+        "type": "image/png",
+        "purpose": "any maskable"
      }
    ]
 }
