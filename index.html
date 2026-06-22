@@ -754,6 +754,21 @@
         }
 
         /* ============ HOME PAGE ============ */
+        .home-banner {
+            text-align: center;
+            padding: 0;
+            margin: 0 -16px 16px;
+        }
+        .home-banner .banner-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .home-banner p {
+            color: var(--subtext-color);
+            font-size: 1rem;
+            padding: 12px 16px 0;
+        }
 
         .home-grid {
             display: grid;
@@ -994,17 +1009,8 @@
 
         <!-- Banner -->
         <div class="home-banner">
-            <div class="hero">
-                <div class="hero-icon">
-                    <svg viewBox="0 0 40 40" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 4 C20 4 12 14 12 20 C12 26 15.5 30 20 30 C24.5 30 28 26 28 20 C28 14 20 4 20 4 Z"/>
-                        <line x1="20" y1="12" x2="20" y2="24"/>
-                        <line x1="14" y1="18" x2="26" y2="18"/>
-                    </svg>
-                </div>
-                <h1>Anesthesie Calculator</h1>
-                <p>Kies een calculator</p>
-            </div>
+            <img src="banner.png" alt="Anesthesie Calculator" class="banner-img">
+            <p>Kies een calculator</p>
         </div>
 
         <!-- Option cards -->
