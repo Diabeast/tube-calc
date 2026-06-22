@@ -735,18 +735,11 @@
         }
         .btn-primary:hover { opacity: 0.9; }
         /* ============ HOME PAGE ============ */
-        .home-hero { text-align: center; padding: 40px 16px 8px; }
-        .home-hero .hero-icon {
-            width: 80px; height: 80px;
-            margin: 0 auto 16px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .home-banner {
+            text-align: center;
+            padding: 32px 16px 8px;
         }
-        .home-hero .hero-icon svg { width: 44px; height: 44px; stroke: #fff; fill: none; stroke-width: 1.5; }
-        .home-hero h1 {
+        .home-banner h1 {
             font-size: 30px;
             font-weight: 800;
             letter-spacing: -0.5px;
@@ -754,8 +747,9 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-bottom: 4px;
         }
-        .home-hero p { color: var(--subtext-color); font-size: 1rem; margin-top: 6px; }
+        .home-banner p { color: var(--subtext-color); font-size: 1rem; }
 
         .home-grid {
             display: grid;
@@ -830,7 +824,7 @@
 
         @media (max-width: 420px) {
             .home-grid { gap: 10px; }
-            .home-hero h1 { font-size: 26px; }
+            .home-banner h1 { font-size: 26px; }
             .home-card { padding: 24px 12px 20px; }
             .home-card-icon { width: 52px; height: 52px; border-radius: 16px; }
             .home-card-icon svg { width: 24px; height: 24px; }
@@ -1031,14 +1025,8 @@
     <!-- ============ HOME VIEW ============ -->
     <div class="container view active" id="view-home">
 
-        <!-- Hero -->
-        <div class="home-hero">
-            <div class="hero-icon">
-                <svg viewBox="0 0 40 40" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="19" cy="22" r="8"/>
-                    <line x1="25" y1="22" x2="25" y2="34"/>
-                </svg>
-            </div>
+        <!-- Banner -->
+        <div class="home-banner">
             <h1>Anesthesie Calculator</h1>
             <p>Kies een calculator</p>
         </div>
