@@ -12,9 +12,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Anesthesie Calc">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="2048x2048" href="Anesthesie%20Calculator%20favicon.png">
-    <link rel="apple-touch-icon" href="Anesthesie%20Calculator%20favicon.png">
+    <link rel="icon" type="image/png" sizes="2048x2048" href="favicon%20a.png">
+    <link rel="apple-touch-icon" href="favicon%20a.png">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Anesthesie Calculator">
@@ -86,18 +87,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px 16px 8px;
-            padding-top: max(16px, env(safe-area-inset-top, 16px));
+            padding: 0 48px;
+            padding-top: env(safe-area-inset-top, 0px);
+            min-height: 56px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid var(--separator);
             position: relative;
+            z-index: 100;
         }
         .header-left {
             position: absolute;
-            left: 8px;
-            top: 50%;
-            transform: translateY(-50%);
+            left: 4px;
+            top: env(safe-area-inset-top, 0px);
             display: flex;
             align-items: center;
             gap: 2px;
+            min-height: 56px;
         }
         .back-btn {
             background: none;
@@ -142,11 +149,11 @@
             border-radius: 2px;
             transition: all 0.3s;
         }
-        header { z-index: 100; }
         .header-title {
             font-size: 18px;
             font-weight: 700;
             color: var(--text-color);
+            white-space: nowrap;
         }
 
         /* ============ SLIDE-IN MENU ============ */
@@ -733,6 +740,41 @@
             color: #fff;
         }
         .btn-primary:hover { opacity: 0.9; }
+
+        /* ============ TIVA GRID ============ */
+        .tiva-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .tiva-grid .result-card {
+            padding: 20px 16px;
+        }
+        .tiva-grid .result-value {
+            font-size: 44px;
+            letter-spacing: -2px;
+        }
+        .tiva-grid .card-title {
+            margin-bottom: 8px;
+        }
+        .tiva-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--separator);
+        }
+        @media (max-width: 420px) {
+            .tiva-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .tiva-grid .result-value {
+                font-size: 36px;
+            }
+        }
+
         /* ============ HOME PAGE ============ */
         .home-banner {
             text-align: center;
@@ -758,74 +800,38 @@
         }
         .home-card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 32px 16px 28px;
-            text-align: center;
+            border-radius: 16px;
+            padding: 20px 20px 20px 28px;
             cursor: pointer;
             border: var(--card-border);
             box-shadow: var(--card-shadow);
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .home-card p {
-            margin-top: auto;
         }
         .home-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+            transform: translateX(4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
-        .home-card:active { transform: translateY(-1px) scale(0.98); }
-        .home-card::after {
+        .home-card:active { transform: scale(0.99); }
+        .home-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
+            top: 8px; left: 0; bottom: 8px;
+            width: 4px;
+            border-radius: 4px;
             background: var(--primary);
             transition: background 0.3s;
         }
-        .home-card:nth-child(2)::after { background: var(--accent); }
-        .home-card-icon {
-            width: 64px; height: 64px;
-            margin: 0 auto 16px;
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .home-card-icon.tube { background: linear-gradient(135deg, #007aff, #5ac8fa); }
-        .home-card-icon.tiva { background: linear-gradient(135deg, #34c759, #30d158); }
-        .home-card-icon.kefzol { background: linear-gradient(135deg, #ff9500, #ffcc00); }
-        .home-card-icon svg { width: 30px; height: 30px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-        .home-card-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 18px; }
-
-        .tiva-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-        .tiva-grid .card { margin-bottom: 0; }
-        .tiva-grid .result-value { font-size: 1.8rem; }
-        .tiva-meta { margin-top: 12px; display: flex; flex-direction: column; gap: 4px; }
-        .tiva-meta .result-meta-item { font-size: 0.75rem; color: var(--subtext-color); display: flex; justify-content: space-between; }
-        .home-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: var(--text-color); }
-        .home-card p { font-size: 0.78rem; color: var(--subtext-color); line-height: 1.4; margin-top: auto; }
-        .home-subtitle {
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--subtext-color);
-            margin-top: 32px;
-            opacity: 0.6;
-        }
+        .home-card:nth-child(1)::before { background: linear-gradient(180deg, #34c759, #30d158); }
+        .home-card:nth-child(2)::before { background: linear-gradient(180deg, #ff9500, #ffcc00); }
+        .home-card:nth-child(3)::before { background: linear-gradient(180deg, #007aff, #5ac8fa); }
+        .home-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; color: var(--text-color); }
+        .home-card p { font-size: 0.82rem; color: var(--subtext-color); line-height: 1.4; margin: 0; }
 
         @media (max-width: 420px) {
             .home-grid { gap: 10px; }
-            .home-card { padding: 24px 12px 20px; }
-            .home-card-icon { width: 52px; height: 52px; border-radius: 16px; }
-            .home-card-icon svg { width: 24px; height: 24px; }
+            .home-card { padding: 20px 16px 16px 24px; }
             .home-card h3 { font-size: 0.95rem; }
             .home-card p { font-size: 0.7rem; }
         }
@@ -1032,31 +1038,22 @@
         <!-- Option cards -->
         <div class="home-grid">
             <div class="home-card" onclick="switchView('dosering')" role="button" tabindex="0">
-                <div class="home-card-icon tiva">
-                    <img src="iv.png" alt="TIVA">
-                </div>
                 <h3>TIVA Calculator</h3>
                 <p>Propofol en remifentanil pompstand via spuitpomp</p>
             </div>
 
             <div class="home-card" onclick="switchView('kefzol')" role="button" tabindex="0">
-                <div class="home-card-icon kefzol">
-                    <img src="druppel.png" alt="Kefzol">
-                </div>
                 <h3>Kefzol Calculator Kind</h3>
                 <p>Cefazoline dosering (30 mg/kg, max 2 gram)</p>
             </div>
 
             <div class="home-card" onclick="switchView('calculator')" role="button" tabindex="0">
-                <div class="home-card-icon tube">
-                    <img src="tube.png" alt="Tube">
-                </div>
                 <h3>Tube Calculator</h3>
                 <p>Cole's formule voor pediatrische tube maat (0–14 jaar)</p>
             </div>
         </div>
 
-        <div class="footer">Anesthesie Calculator &copy; 2024 &mdash; voor medisch professionals</div>
+        <div class="footer">Anesthesie Calculator @ 2026 - Door Arthur Mink</div>
     </div>
 
     <!-- ============ CALCULATOR VIEW ============ -->
@@ -1132,7 +1129,7 @@
             </button>
         </div>
 
-        <div class="footer">Anesthesie Calculator &copy; 2024 &mdash; voor medisch professionals</div>
+        <div class="footer">Anesthesie Calculator @ 2026 - Door Arthur Mink</div>
     </div>
 
     <!-- ============ INFO VIEW ============ -->
@@ -1195,7 +1192,7 @@
             </button>
         </div>
 
-        <div class="footer">Anesthesie Calculator &copy; 2024 &mdash; voor medisch professionals</div>
+        <div class="footer">Anesthesie Calculator @ 2026 - Door Arthur Mink</div>
     </div>
 
     <!-- ============ TIVA VIEW ============ -->
@@ -1274,7 +1271,7 @@
             </button>
         </div>
 
-        <div class="footer">Anesthesie Calculator &copy; 2024 &mdash; voor medisch professionals</div>
+        <div class="footer">Anesthesie Calculator @ 2026 - Door Arthur Mink</div>
     </div>
 
     <!-- ============ KEFZOL VIEW ============ -->
@@ -1364,7 +1361,7 @@
             </button>
         </div>
 
-        <div class="footer">Anesthesie Calculator &copy; 2024 &mdash; voor medisch professionals</div>
+        <div class="footer">Anesthesie Calculator @ 2026 - Door Arthur Mink</div>
     </div>
 
     <script>
