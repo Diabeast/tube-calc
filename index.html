@@ -727,36 +727,25 @@
         .home-card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 20px 24px;
+            padding: 24px 28px;
             cursor: pointer;
             border: var(--card-border);
             box-shadow: var(--card-shadow);
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            align-items: center;
-            gap: 16px;
         }
         .home-card:hover {
             transform: translateX(4px);
             box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
         .home-card:active { transform: scale(0.99); }
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            flex-shrink: 0;
-        }
-        .card-text { flex: 1; min-width: 0; }
-        .card-text h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text-color); }
-        .card-text p { font-size: 0.9rem; color: var(--subtext-color); line-height: 1.5; margin: 0; }
+        .home-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text-color); }
+        .home-card p { font-size: 0.9rem; color: var(--subtext-color); line-height: 1.5; margin: 0; }
 
         @media (max-width: 420px) {
             .home-grid { gap: 12px; }
-            .home-card { padding: 16px 18px; gap: 14px; }
-            .card-icon { width: 40px; height: 40px; }
-            .card-text h3 { font-size: 1.1rem; }
-            .card-text p { font-size: 0.78rem; }
+            .home-card { padding: 18px 20px; }
+            .home-card h3 { font-size: 1.1rem; }
+            .home-card p { font-size: 0.78rem; }
         }
 
         /* ============ RESPONSIVE ============ */
@@ -914,27 +903,18 @@
         <!-- Option cards -->
         <div class="home-grid">
             <div class="home-card" onclick="switchView('dosering')" role="button" tabindex="0">
-                <img class="card-icon" src="favicongoed.png" alt="">
-                <div class="card-text">
-                    <h3>TIVA Calculator</h3>
-                    <p>Propofol en remifentanil pompstand via spuitpomp</p>
-                </div>
+                <h3>TIVA Calculator</h3>
+                <p>Propofol en remifentanil pompstand via spuitpomp</p>
             </div>
 
             <div class="home-card" onclick="switchView('kefzol')" role="button" tabindex="0">
-                <img class="card-icon" src="favicongoed.png" alt="">
-                <div class="card-text">
-                    <h3>Kefzol Calculator Kind</h3>
-                    <p>Cefazoline dosering (30 mg/kg, max 2 gram)</p>
-                </div>
+                <h3>Kefzol Calculator Kind</h3>
+                <p>Cefazoline dosering (30 mg/kg, max 2 gram)</p>
             </div>
 
             <div class="home-card" onclick="switchView('calculator')" role="button" tabindex="0">
-                <img class="card-icon" src="favicongoed.png" alt="">
-                <div class="card-text">
-                    <h3>Tube Calculator</h3>
-                    <p>Cole's formule voor pediatrische tube maat (0–14 jaar)</p>
-                </div>
+                <h3>Tube Calculator</h3>
+                <p>Cole's formule voor pediatrische tube maat (0–14 jaar)</p>
             </div>
         </div>
 
