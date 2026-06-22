@@ -807,6 +807,7 @@
         .home-card-icon.tiva { background: linear-gradient(135deg, #34c759, #30d158); }
         .home-card-icon.kefzol { background: linear-gradient(135deg, #ff9500, #ffcc00); }
         .home-card-icon svg { width: 30px; height: 30px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        .home-card-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 18px; }
 
         .tiva-grid {
             display: grid;
@@ -1046,14 +1047,7 @@
         <div class="home-grid">
             <div class="home-card" onclick="switchView('dosering')" role="button" tabindex="0">
                 <div class="home-card-icon tiva">
-                    <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="20" y1="6" x2="25" y2="11"/>
-                        <rect x="7" y="14" width="16" height="12" rx="1.5"/>
-                        <line x1="15" y1="26" x2="15" y2="31" stroke-width="2"/>
-                        <rect x="12" y="30" width="6" height="2" rx="1" fill="white" stroke="none"/>
-                        <line x1="7" y1="16" x2="3" y2="16" stroke-width="2"/>
-                        <line x1="23" y1="16" x2="27" y2="16" stroke-width="2"/>
-                    </svg>
+                    <img src="iv.png" alt="TIVA">
                 </div>
                 <h3>TIVA Calculator</h3>
                 <p>Propofol en remifentanil pompstand via spuitpomp</p>
@@ -1061,9 +1055,7 @@
 
             <div class="home-card" onclick="switchView('kefzol')" role="button" tabindex="0">
                 <div class="home-card-icon kefzol">
-                    <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 4 C16 4 7 15 7 21 C7 26 11 29 16 29 C21 29 25 26 25 21 C25 15 16 4 16 4 Z"/>
-                    </svg>
+                    <img src="druppel.png" alt="Kefzol">
                 </div>
                 <h3>Kefzol Calculator Kind</h3>
                 <p>Cefazoline dosering (30 mg/kg, max 2 gram)</p>
@@ -1071,10 +1063,7 @@
 
             <div class="home-card" onclick="switchView('calculator')" role="button" tabindex="0">
                 <div class="home-card-icon tube">
-                    <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="9" y="3" width="14" height="4" rx="1.5"/>
-                        <path d="M11 7 L21 7 L21 22 L16 26 L11 22 Z"/>
-                    </svg>
+                    <img src="tube.png" alt="Tube">
                 </div>
                 <h3>Tube Calculator</h3>
                 <p>Cole's formule voor pediatrische tube maat (0–14 jaar)</p>
