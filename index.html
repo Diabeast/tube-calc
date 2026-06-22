@@ -754,28 +754,17 @@
         }
 
         /* ============ HOME PAGE ============ */
-        /* Banner — pure HTML tekst, geen SVG, geen randen */
+        /* Banner — PNG met transparante achtergrond */
         .home-banner {
             text-align: center;
             padding: 20px 0 8px;
             margin: 0;
         }
-        .banner-title {
-            font-size: 2.4rem;
-            font-weight: 900;
-            letter-spacing: -1px;
-            line-height: 1.15;
-            color: var(--text-color);
-            margin: 0;
-        }
-        .banner-title span {
+        .banner-img {
             display: block;
-        }
-        @media (max-width: 600px) {
-            .banner-title { font-size: 1.9rem; }
-        }
-        @media (max-width: 400px) {
-            .banner-title { font-size: 1.6rem; }
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
         }
 
 
@@ -1016,12 +1005,9 @@
     <!-- ============ HOME VIEW ============ -->
     <div class="container view active" id="view-home">
 
-        <!-- Banner — pure HTML tekst, geen SVG, geen randen -->
+        <!-- Banner -->
         <div class="home-banner">
-            <h1 class="banner-title">
-                <span>Anesthesie</span>
-                <span>Calculator</span>
-            </h1>
+            <img src="banner1_nobg_v2.png" alt="Anesthesie Calculator" class="banner-img">
         </div>
 
         <!-- Option cards -->
