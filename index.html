@@ -133,6 +133,17 @@
             height: 22px;
             display: block;
         }
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header-logo {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            flex-shrink: 0;
+        }
         .header-title {
             font-size: 18px;
             font-weight: 700;
@@ -804,7 +815,10 @@
                 </svg>
             </button>
         </div>
-        <span class="header-title" id="header-title"></span>
+        <div class="header-center">
+            <img class="header-logo" src="favicongoed.png" alt="Anesthesie Calculator">
+            <span class="header-title" id="header-title"></span>
+        </div>
         <div class="header-right">
             <button class="header-icon-btn" onclick="switchView('info')" aria-label="Informatie">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
