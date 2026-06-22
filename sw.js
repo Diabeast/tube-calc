@@ -6,7 +6,6 @@ const URLS = [
   'manifest.json',
   'icon.svg',
   'favicon a.png',
-  'favicon.ico',
   'anestbanner.png'
 ];
 
