@@ -7,12 +7,12 @@
   "background_color": "#1c1c1e",
   "theme_color": "#007aff",
   "orientation": "portrait",
-  "icons": [
-    {
-      "src": "appicon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
+   "icons": [
+     {
+       "src": "Anesthesie Calculator favicon.png",
+       "sizes": "2048x2048",
+       "type": "image/png",
+       "purpose": "any maskable"
+     }
+   ]
 }

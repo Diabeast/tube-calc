@@ -13,9 +13,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Anesthesie Calc">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="appicon.png">
-    <link rel="apple-touch-icon" href="appicon.png">
+    <link rel="icon" type="image/png" sizes="2048x2048" href="Anesthesie%20Calculator%20favicon.png">
+    <link rel="apple-touch-icon" href="Anesthesie%20Calculator%20favicon.png">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Anesthesie Calculator">
@@ -737,19 +736,19 @@
         /* ============ HOME PAGE ============ */
         .home-banner {
             text-align: center;
-            padding: 32px 16px 8px;
+            padding: 0;
+            margin: 0 -16px 16px;
         }
-        .home-banner h1 {
-            font-size: 30px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 4px;
+        .home-banner .banner-img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
-        .home-banner p { color: var(--subtext-color); font-size: 1rem; }
+        .home-banner p {
+            color: var(--subtext-color);
+            font-size: 1rem;
+            padding: 12px 16px 0;
+        }
 
         .home-grid {
             display: grid;
@@ -824,7 +823,6 @@
 
         @media (max-width: 420px) {
             .home-grid { gap: 10px; }
-            .home-banner h1 { font-size: 26px; }
             .home-card { padding: 24px 12px 20px; }
             .home-card-icon { width: 52px; height: 52px; border-radius: 16px; }
             .home-card-icon svg { width: 24px; height: 24px; }
@@ -1027,7 +1025,7 @@
 
         <!-- Banner -->
         <div class="home-banner">
-            <h1>Anesthesie Calculator</h1>
+            <img src="anestbanner.png" alt="Anesthesie Calculator" class="banner-img">
             <p>Kies een calculator</p>
         </div>
 
