@@ -1559,16 +1559,15 @@
             document.getElementById('tiva-prop-conc').textContent = '10 mg/ml';
             propMeta.style.display = 'flex';
 
-            // Remifentanil: 0.5 µg/kg/min = 30 µg/kg/h at 50 µg/ml
-            const remiDosePerMin = 0.5; // µg/kg/min
-            const remiDosePerHour = remiDosePerMin * 60; // 30 µg/kg/h
+            // Remifentanil: 10 µg/kg/h at 50 µg/ml
+            const remiDosePerHour = 10; // µg/kg/h
             const remiConc = 50; // µg/ml
             const remiMlPerHour = (remiDosePerHour * weight) / remiConc;
 
             remiResult.textContent = tivaFmt(remiMlPerHour, 1) + '';
             remiResult.style.color = 'var(--accent)';
             remiUnit.textContent = 'ml/uur';
-            document.getElementById('tiva-remi-dose').textContent = '0,5 µg/kg/min';
+            document.getElementById('tiva-remi-dose').textContent = '10 µg/kg/h';
             document.getElementById('tiva-remi-conc').textContent = '50 µg/ml';
             remiMeta.style.display = 'flex';
         }
