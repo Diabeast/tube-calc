@@ -1,11 +1,11 @@
 // Anesthesie Calculator Service Worker
-const CACHE = 'anesthesiecalc-v7';
+const CACHE = 'anesthesiecalc-v8';
 const URLS = [
   '.',
   'index.html',
   'manifest.json',
   'favicongoed.png',
-  'banner1.png'
+  'banner.svg'
 ];
 
 self.addEventListener('install', event => {
