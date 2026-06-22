@@ -1,5 +1,5 @@
-// ArtAnest Service Worker
-const CACHE = 'artanest-v3';
+// Anesthesie Calculator Service Worker
+const CACHE = 'anesthesiecalc-v4';
 const URLS = [
   '.',
   'index.html',

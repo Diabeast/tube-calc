@@ -1,7 +1,7 @@
 {
-  "name": "ArtAnest",
-  "short_name": "ArtAnest",
-  "description": "Pediatrische Tube Size Calculator — Cole's formule",
+  "name": "Anesthesie Calculator",
+  "short_name": "Anesthesie Calc",
+  "description": "TIVA, Kefzol en Tube calculators voor de anesthesie",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#1c1c1e",

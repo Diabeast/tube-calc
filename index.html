@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>ArtAnest</title>
+    <title>Anesthesie Calculator</title>
 
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
@@ -11,14 +11,14 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ArtAnest">
+    <meta name="apple-mobile-web-app-title" content="Anesthesie Calc">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <link rel="icon" type="image/png" sizes="512x512" href="appicon.png">
     <link rel="apple-touch-icon" href="appicon.png">
 
     <!-- Open Graph / Social Media -->
-    <meta property="og:title" content="ArtAnest">
+    <meta property="og:title" content="Anesthesie Calculator">
     <meta property="og:description" content="TIVA, Kefzol en Tube calculators voor de anesthesie — propofol/remifentanil pompstand, cefazoline dosering, Cole's tube maat.">
     <meta property="og:image" content="https://diabeast.github.io/tube-calc/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -26,7 +26,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://diabeast.github.io/tube-calc/">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ArtAnest">
+    <meta name="twitter:title" content="Anesthesie Calculator">
     <meta name="twitter:description" content="TIVA, Kefzol en Tube calculators voor de anesthesie — propofol/remifentanil pompstand, cefazoline dosering, Cole's tube maat.">
     <meta name="twitter:image" content="https://diabeast.github.io/tube-calc/og-image.png">
 
@@ -143,14 +143,11 @@
             border-radius: 2px;
             transition: all 0.3s;
         }
-        .logo-text {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        header { z-index: 100; }
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-color);
         }
 
         /* ============ SLIDE-IN MENU ============ */
@@ -891,18 +888,18 @@
                     <path d="M12 19l-7-7 7-7"/>
                 </svg>
             </button>
-            <button class="hamburger-btn" onclick="openMenu()" aria-label="Menu">
+            <button class="hamburger-btn" id="menu-btn" aria-label="Menu">
                 <span></span><span></span><span></span>
             </button>
         </div>
-        <span class="logo-text">ArtAnest</span>
+        <span class="header-title" id="header-title"></span>
     </header>
 
     <!-- ============ SLIDE-IN MENU ============ -->
     <div class="menu-overlay" id="menu-overlay" onclick="closeMenu()"></div>
     <div class="menu-panel" id="menu-panel">
         <div class="menu-header">
-            <h2>ArtAnest</h2>
+            <h2>Anesthesie Calculator</h2>
             <button class="menu-close" onclick="closeMenu()">✕</button>
         </div>
         <nav class="menu-nav">
@@ -921,7 +918,7 @@
                     <circle cx="15" cy="15" r="2"/>
                     <circle cx="15" cy="19" r="2"/>
                 </svg>
-                ArtAnest
+                Tube Calculator
             </button>
             <button class="menu-nav-item" onclick="switchView('info')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1018,7 +1015,7 @@
             <div class="settings-group">
                 <div class="settings-row">
                     <span class="settings-row-label">Versie</span>
-                    <span class="settings-row-info" style="text-align:right;color:var(--subtext-color);">ArtAnest 1.0</span>
+                    <span class="settings-row-info" style="text-align:right;color:var(--subtext-color);">1.0</span>
                 </div>
                 <div class="settings-row">
                     <span class="settings-row-label">Modus</span>
@@ -1043,7 +1040,7 @@
                     <line x1="20.5" y1="24" x2="33.5" y2="24"/>
                 </svg>
             </div>
-            <h1>ArtAnest</h1>
+            <h1>Anesthesie Calculator</h1>
             <p>Kies een calculator</p>
         </div>
 
@@ -1086,7 +1083,7 @@
             </div>
         </div>
 
-        <div class="footer">ArtAnest &copy; 2024 &mdash; voor medisch professionals</div>
+        <div class="footer">Anesthesie Calculator &copy; 2024 &mdash; voor medisch professionals</div>
     </div>
 
     <!-- ============ CALCULATOR VIEW ============ -->
@@ -1155,7 +1152,14 @@
             </div>
         </div>
 
-        <div class="footer">ArtAnest &copy; 2024 &mdash; voor medisch professionals</div>
+        <div class="btn-row">
+            <button class="btn btn-ghost" onclick="goBack()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                Terug
+            </button>
+        </div>
+
+        <div class="footer">Anesthesie Calculator &copy; 2024 &mdash; voor medisch professionals</div>
     </div>
 
     <!-- ============ INFO VIEW ============ -->
@@ -1169,7 +1173,7 @@
                     <line x1="20.5" y1="24" x2="33.5" y2="24"/>
                 </svg>
             </div>
-            <h1>Over ArtAnest</h1>
+            <h1>Over</h1>
             <p>Anesthesie calculators voor de klinische praktijk</p>
         </div>
 
@@ -1213,7 +1217,14 @@
             </p>
         </div>
 
-        <div class="footer">ArtAnest &copy; 2024 &mdash; voor medisch professionals</div>
+        <div class="btn-row">
+            <button class="btn btn-ghost" onclick="goBack()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                Terug naar Home
+            </button>
+        </div>
+
+        <div class="footer">Anesthesie Calculator &copy; 2024 &mdash; voor medisch professionals</div>
     </div>
 
     <!-- ============ TIVA VIEW ============ -->
@@ -1286,9 +1297,13 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                 Herstellen
             </button>
+            <button class="btn btn-ghost" onclick="goBack()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                Terug
+            </button>
         </div>
 
-        <div class="footer">ArtAnest &copy; 2024 &mdash; voor medisch professionals</div>
+        <div class="footer">Anesthesie Calculator &copy; 2024 &mdash; voor medisch professionals</div>
     </div>
 
     <!-- ============ KEFZOL VIEW ============ -->
@@ -1372,14 +1387,18 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                 Herstellen
             </button>
+            <button class="btn btn-ghost" onclick="goBack()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                Terug
+            </button>
         </div>
 
-        <div class="footer">ArtAnest &copy; 2024 &mdash; voor medisch professionals</div>
+        <div class="footer">Anesthesie Calculator &copy; 2024 &mdash; voor medisch professionals</div>
     </div>
 
     <script>
         // ============ STATE ============
-        const CFG_KEY = 'artanest_settings';
+        const CFG_KEY = 'anesthesiecalc_settings';
         const DEFAULTS = {
             tubeType: 'uncuffed',
             defaultAge: 1,
@@ -1433,6 +1452,20 @@
             document.getElementById('menu-overlay').classList.remove('open');
             document.getElementById('menu-panel').classList.remove('open');
         }
+        document.addEventListener('DOMContentLoaded', function() {
+            var menuBtn = document.getElementById('menu-btn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openMenu();
+                });
+                menuBtn.addEventListener('touchstart', function(e) {
+                    // prevent conflicts with iOS swipe gestures
+                    e.preventDefault();
+                    openMenu();
+                }, { passive: false });
+            }
+        });
 
         // ============ VIEWS ============
         let navStack = [];
@@ -1450,9 +1483,14 @@
             }
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById('view-' + name).classList.add('active');
+            // Update header title
+            const titles = { home: '', calculator: 'Tube Calculator', info: 'Over', dosering: 'TIVA', kefzol: 'Kefzol' };
+            document.getElementById('header-title').textContent = titles[name] || '';
+            // Menu active state
             document.querySelectorAll('.menu-nav-item').forEach(item => item.classList.remove('active'));
             const tabMap = { home: 0, calculator: 1, info: 2, dosering: 3, kefzol: 4 };
-            document.querySelectorAll('.menu-nav-item')[tabMap[name]]?.classList.add('active');
+            const activeItem = document.querySelectorAll('.menu-nav-item')[tabMap[name]];
+            if (activeItem) activeItem.classList.add('active');
             closeMenu();
             if (name === 'calculator') updateAll();
             if (name === 'dosering') tivaCalc();
