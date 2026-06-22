@@ -759,12 +759,10 @@
             padding: 0;
             margin: 0 -16px 16px;
         }
-        .home-banner .banner-svg {
+        .home-banner .banner-img {
             width: 100%;
             height: auto;
             display: block;
-            max-width: 500px;
-            margin: 0 auto;
         }
         .home-banner p {
             color: var(--subtext-color);
@@ -1009,22 +1007,9 @@
     <!-- ============ HOME VIEW ============ -->
     <div class="container view active" id="view-home">
 
-        <!-- Banner (inline SVG, geen PNG) -->
+        <!-- Banner -->
         <div class="home-banner">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 120" class="banner-svg">
-                <defs>
-                    <linearGradient id="bannerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#0a84ff"/>
-                        <stop offset="50%" stop-color="#30d158"/>
-                        <stop offset="100%" stop-color="#64d2ff"/>
-                    </linearGradient>
-                </defs>
-                <text x="50%" y="55%" text-anchor="middle" dominant-baseline="middle"
-                      font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="900"
-                      fill="url(#bannerGrad)" letter-spacing="-1">
-                    Anesthesie Calculator
-                </text>
-            </svg>
+            <img src="banner1.png" alt="Anesthesie Calculator" class="banner-img">
             <p>Kies een calculator</p>
         </div>
 
