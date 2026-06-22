@@ -1,26 +1,5 @@
 Add-Type -AssemblyName System.Drawing
 
-function Draw-AAMonogram {
-    param([System.Drawing.Graphics]$g, [int]$cx, [int]$cy, [float]$s)
-
-    $white = [System.Drawing.Color]::White
-    $pw = new-object System.Drawing.Pen($white, [math]::Max(2.0, $s * 32.0))
-    $pw.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
-    $pw.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
-
-    # Left A
-    $g.DrawLine($pw, $cx+[int](-166*$s), $cy+[int](174*$s), $cx+[int](-36*$s), $cy+[int](-186*$s))
-    $g.DrawLine($pw, $cx+[int](-36*$s), $cy+[int](-186*$s), $cx+[int](94*$s), $cy+[int](174*$s))
-    # Left A crossbar
-    $g.DrawLine($pw, $cx+[int](-126*$s), $cy+[int](54*$s), $cx+[int](54*$s), $cy+[int](54*$s))
-
-    # Right A
-    $g.DrawLine($pw, $cx+[int](-36*$s), $cy+[int](174*$s), $cx+[int](94*$s), $cy+[int](-186*$s))
-    $g.DrawLine($pw, $cx+[int](94*$s), $cy+[int](-186*$s), $cx+[int](224*$s), $cy+[int](174*$s))
-    # Right A crossbar
-    $g.DrawLine($pw, $cx+[int](4*$s), $cy+[int](54*$s), $cx+[int](184*$s), $cy+[int](54*$s))
-}
-
 # ----- App Icon 512x512 -----
 Write-Host "Generating appicon.png..."
 $size = 512
@@ -31,6 +10,7 @@ $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
 $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
 $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
 
+# Rounded rect clip
 $cr = [int]($size * 0.195)
 $path = new-object System.Drawing.Drawing2D.GraphicsPath
 $path.AddArc(0, 0, $cr*2, $cr*2, 180, 90)
@@ -40,6 +20,7 @@ $path.AddArc(0, $size-$cr*2, $cr*2, $cr*2, 90, 90)
 $path.CloseFigure()
 $g.Clip = new-object System.Drawing.Region($path)
 
+# Gradient background (blue → green)
 $rect = new-object System.Drawing.Rectangle(0, 0, $size, $size)
 $brush = new-object System.Drawing.Drawing2D.LinearGradientBrush(
     $rect,
@@ -50,7 +31,16 @@ $brush = new-object System.Drawing.Drawing2D.LinearGradientBrush(
 $g.FillRectangle($brush, $rect)
 $g.ResetClip()
 
-Draw-AAMonogram $g ($size/2) ($size/2) ($size/512.0)
+# Witte "A" met mooie proporties
+$font = new-object System.Drawing.Font("Arial", 380, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
+$white = new-object System.Drawing.SolidBrush([System.Drawing.Color]::White)
+$fmt = new-object System.Drawing.StringFormat
+$fmt.Alignment = [System.Drawing.StringAlignment]::Center
+$fmt.LineAlignment = [System.Drawing.StringAlignment]::Center
+$g.DrawString("A", $font, $white, ($size/2), ($size/2)+8, $fmt)
+$font.Dispose()
+$white.Dispose()
+$fmt.Dispose()
 $g.Dispose()
 $bmp.Save("appicon.png", [System.Drawing.Imaging.ImageFormat]::Png)
 Write-Host "  -> appicon.png saved"
@@ -65,7 +55,7 @@ $fg.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
 $fg.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
 $fg.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
 
-# Gradient background (zelfde als appicon)
+# Gradient background
 $frect = new-object System.Drawing.Rectangle(0, 0, $fsize, $fsize)
 $fbrush = new-object System.Drawing.Drawing2D.LinearGradientBrush(
     $frect,
@@ -75,7 +65,16 @@ $fbrush = new-object System.Drawing.Drawing2D.LinearGradientBrush(
 )
 $fg.FillRectangle($fbrush, $frect)
 
-Draw-AAMonogram $fg ($fsize/2) ($fsize/2) ($fsize/512.0)
+# Witte "A"
+$ffont = new-object System.Drawing.Font("Arial", 24, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
+$fwhite = new-object System.Drawing.SolidBrush([System.Drawing.Color]::White)
+$ffmt = new-object System.Drawing.StringFormat
+$ffmt.Alignment = [System.Drawing.StringAlignment]::Center
+$ffmt.LineAlignment = [System.Drawing.StringAlignment]::Center
+$fg.DrawString("A", $ffont, $fwhite, ($fsize/2), ($fsize/2)+1, $ffmt)
+$ffont.Dispose()
+$fwhite.Dispose()
+$ffmt.Dispose()
 $fg.Dispose()
 $fbmp.Save("favicon.png", [System.Drawing.Imaging.ImageFormat]::Png)
 Write-Host "  -> favicon.png saved"
