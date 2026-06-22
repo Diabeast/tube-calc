@@ -4,8 +4,7 @@ const URLS = [
   '.',
   'index.html',
   'manifest.json',
-  'favicongoed.png',
-  'banner.svg'
+  'favicongoed.png'
 ];
 
 self.addEventListener('install', event => {

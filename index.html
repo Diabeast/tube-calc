@@ -754,15 +754,28 @@
         }
 
         /* ============ HOME PAGE ============ */
+        /* Banner — pure HTML tekst, geen SVG, geen randen */
         .home-banner {
             text-align: center;
-            padding: 0;
-            margin: 0 -16px 16px;
+            padding: 20px 0 8px;
+            margin: 0;
         }
-        .home-banner .banner-img {
-            width: 100%;
-            height: auto;
+        .banner-title {
+            font-size: 2.4rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            color: var(--text-color);
+            margin: 0;
+        }
+        .banner-title span {
             display: block;
+        }
+        @media (max-width: 600px) {
+            .banner-title { font-size: 1.9rem; }
+        }
+        @media (max-width: 400px) {
+            .banner-title { font-size: 1.6rem; }
         }
 
 
@@ -1003,9 +1016,12 @@
     <!-- ============ HOME VIEW ============ -->
     <div class="container view active" id="view-home">
 
-        <!-- Banner -->
+        <!-- Banner — pure HTML tekst, geen SVG, geen randen -->
         <div class="home-banner">
-            <img src="banner.svg" alt="Anesthesie Calculator" class="banner-img">
+            <h1 class="banner-title">
+                <span>Anesthesie</span>
+                <span>Calculator</span>
+            </h1>
         </div>
 
         <!-- Option cards -->
