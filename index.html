@@ -103,29 +103,35 @@
             height: 24px;
             display: block;
         }
-        .hamburger-btn {
+        .header-right {
+            position: absolute;
+            right: 8px;
+            top: env(safe-area-inset-top, 0px);
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            min-height: 56px;
+        }
+        .header-icon-btn {
             background: none;
             border: none;
             cursor: pointer;
-            padding: 10px 8px;
-            color: var(--text-color);
+            color: var(--subtext-color);
+            padding: 10px 6px;
             display: flex;
-            flex-direction: column;
-            gap: 5px;
+            align-items: center;
+            justify-content: center;
             -webkit-user-select: none;
             touch-action: manipulation;
             min-width: 44px;
             min-height: 44px;
-            align-items: center;
-            justify-content: center;
+            transition: color 0.2s;
         }
-        .hamburger-btn span {
-            display: block;
+        .header-icon-btn:hover { color: var(--text-color); }
+        .header-icon-btn svg {
             width: 22px;
-            height: 2.5px;
-            background: var(--text-color);
-            border-radius: 2px;
-            transition: all 0.3s;
+            height: 22px;
+            display: block;
         }
         .header-title {
             font-size: 18px;
@@ -134,74 +140,7 @@
             white-space: nowrap;
         }
 
-        /* ============ SLIDE-IN MENU ============ */
-        .menu-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            z-index: 200;
-        }
-        .menu-overlay.open { display: block; }
 
-        .menu-panel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: min(310px, 85vw);
-            background: var(--card-bg);
-            z-index: 201;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            padding-top: env(safe-area-inset-top, 0px);
-        }
-        .menu-panel.open { transform: translateX(0); }
-
-        .menu-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 20px 16px;
-            border-bottom: 1px solid var(--separator);
-        }
-        .menu-header h2 {
-            margin: 0;
-            font-size: 1.2rem;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .menu-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-color);
-            padding: 4px 8px;
-        }
-        .menu-nav { padding: 12px 0; }
-        .menu-nav-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 20px;
-            cursor: pointer;
-            font-size: 1rem;
-            color: var(--text-color);
-            border: none;
-            background: none;
-            width: 100%;
-            text-align: left;
-            transition: background 0.15s;
-        }
-        .menu-nav-item:hover { background: rgba(127,127,127,0.08); }
-        .menu-nav-item.active { color: var(--primary); font-weight: 600; }
-        .menu-nav-item svg { width: 22px; height: 22px; flex-shrink: 0; }
 
         /* ============ MAIN CONTAINER ============ */
         .container {
@@ -771,13 +710,13 @@
         .home-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 14px;
-            margin-top: 28px;
+            gap: 16px;
+            margin-top: 16px;
         }
         .home-card {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px 20px 20px 28px;
+            border-radius: 20px;
+            padding: 28px 24px 28px 34px;
             cursor: pointer;
             border: var(--card-border);
             box-shadow: var(--card-shadow);
@@ -793,23 +732,24 @@
         .home-card::before {
             content: '';
             position: absolute;
-            top: 8px; left: 0; bottom: 8px;
-            width: 4px;
-            border-radius: 4px;
+            top: 10px; left: 0; bottom: 10px;
+            width: 5px;
+            border-radius: 5px;
             background: var(--primary);
             transition: background 0.3s;
         }
-        .home-card:nth-child(1)::before { background: linear-gradient(180deg, #34c759, #30d158); }
-        .home-card:nth-child(2)::before { background: linear-gradient(180deg, #ff9500, #ffcc00); }
-        .home-card:nth-child(3)::before { background: linear-gradient(180deg, #007aff, #5ac8fa); }
-        .home-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; color: var(--text-color); }
-        .home-card p { font-size: 0.82rem; color: var(--subtext-color); line-height: 1.4; margin: 0; }
+        /* Logo gradient colors: #1d4dff (blue) → #43d2ff (cyan) → #68f05e (green) */
+        .home-card:nth-child(1)::before { background: linear-gradient(180deg, #49ff5f, #68f05e); }
+        .home-card:nth-child(2)::before { background: linear-gradient(180deg, #00c7be, #43d2ff); }
+        .home-card:nth-child(3)::before { background: linear-gradient(180deg, #1d4dff, #2f66ff); }
+        .home-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; color: var(--text-color); }
+        .home-card p { font-size: 0.9rem; color: var(--subtext-color); line-height: 1.5; margin: 0; }
 
         @media (max-width: 420px) {
-            .home-grid { gap: 10px; }
-            .home-card { padding: 20px 16px 16px 24px; }
-            .home-card h3 { font-size: 0.95rem; }
-            .home-card p { font-size: 0.7rem; }
+            .home-grid { gap: 12px; }
+            .home-card { padding: 22px 18px 22px 26px; }
+            .home-card h3 { font-size: 1.1rem; }
+            .home-card p { font-size: 0.78rem; }
         }
 
         /* ============ RESPONSIVE ============ */
@@ -848,7 +788,7 @@
             text-transform: uppercase;
         }
         .badge-green { background: var(--accent); color: #fff; }
-        .badge-orange { background: var(--warning); color: #fff; }
+        .badge-teal { background: #00c7be; color: #fff; }
         .badge-red { background: var(--danger); color: #fff; }
     </style>
 </head>
@@ -863,75 +803,26 @@
                     <path d="M12 19l-7-7 7-7"/>
                 </svg>
             </button>
-            <button class="hamburger-btn" id="menu-btn" aria-label="Menu">
-                <span></span><span></span><span></span>
-            </button>
         </div>
         <span class="header-title" id="header-title"></span>
-    </header>
-
-    <!-- ============ SLIDE-IN MENU ============ -->
-    <div class="menu-overlay" id="menu-overlay" onclick="closeMenu()"></div>
-    <div class="menu-panel" id="menu-panel">
-        <div class="menu-header">
-            <h2>Anesthesie Calculator</h2>
-            <button class="menu-close" onclick="closeMenu()">✕</button>
-        </div>
-        <nav class="menu-nav">
-            <button class="menu-nav-item active" onclick="switchView('home')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                </svg>
-                Home
-            </button>
-            <button class="menu-nav-item" onclick="switchView('calculator')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="4" y="2" width="16" height="20" rx="2"/>
-                    <line x1="8" y1="6" x2="16" y2="6"/>
-                    <line x1="8" y1="10" x2="16" y2="10"/>
-                    <line x1="8" y1="14" x2="12" y2="14"/>
-                    <circle cx="15" cy="15" r="2"/>
-                    <circle cx="15" cy="19" r="2"/>
-                </svg>
-                Tube Calculator
-            </button>
-            <button class="menu-nav-item" onclick="switchView('info')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <div class="header-right">
+            <button class="header-icon-btn" onclick="switchView('info')" aria-label="Informatie">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <line x1="12" y1="16" x2="12" y2="12"/>
                     <line x1="12" y1="8" x2="12.01" y2="8"/>
                 </svg>
-                Informatie
             </button>
-            <button class="menu-nav-item" onclick="switchView('dosering')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M7 21h10"/>
-                    <path d="M12 21V9"/>
-                    <path d="M12 3v6"/>
-                    <path d="M8 9h8"/>
-                    <path d="M6 9a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2"/>
-                    <path d="M10 3L8 9"/>
-                    <path d="M14 3l2 6"/>
-                    <path d="M5 21a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2"/>
-                </svg>
-                TIVA
-            </button>
-            <button class="menu-nav-item" onclick="switchView('kefzol')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 6v12M6 12h12"/>
-                </svg>
-                Kefzol kind
-            </button>
-            <button class="menu-nav-item" onclick="closeMenu(); openSettings();">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button class="header-icon-btn" onclick="openSettings()" aria-label="Instellingen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="3"/>
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                 </svg>
-                Instellingen
             </button>
-        </nav>
-    </div>
+        </div>
+    </header>
+
+
 
     <!-- ============ iOS SETTINGS PAGE ============ -->
     <div class="settings-page" id="settings-page">
@@ -1386,29 +1277,7 @@
             updateAll();
         }
 
-        // ============ MENU ============
-        function openMenu() {
-            document.getElementById('menu-overlay').classList.add('open');
-            document.getElementById('menu-panel').classList.add('open');
-        }
-        function closeMenu() {
-            document.getElementById('menu-overlay').classList.remove('open');
-            document.getElementById('menu-panel').classList.remove('open');
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            var menuBtn = document.getElementById('menu-btn');
-            if (menuBtn) {
-                menuBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    openMenu();
-                });
-                menuBtn.addEventListener('touchstart', function(e) {
-                    // prevent conflicts with iOS swipe gestures
-                    e.preventDefault();
-                    openMenu();
-                }, { passive: false });
-            }
-        });
+
 
         // ============ VIEWS ============
         let navStack = [];
@@ -1429,12 +1298,7 @@
             // Update header title
             const titles = { home: '', calculator: 'Tube Calculator', info: 'Over', dosering: 'TIVA', kefzol: 'Kefzol' };
             document.getElementById('header-title').textContent = titles[name] || '';
-            // Menu active state
-            document.querySelectorAll('.menu-nav-item').forEach(item => item.classList.remove('active'));
-            const tabMap = { home: 0, calculator: 1, info: 2, dosering: 3, kefzol: 4 };
-            const activeItem = document.querySelectorAll('.menu-nav-item')[tabMap[name]];
-            if (activeItem) activeItem.classList.add('active');
-            closeMenu();
+
             if (name === 'calculator') updateAll();
             if (name === 'dosering') tivaCalc();
             if (name === 'kefzol') cefCalc();
@@ -1666,7 +1530,7 @@
             // Badge
             const badge = document.getElementById('result-badge');
             badge.textContent = isCuffed ? 'Cuffed' : 'Uncuffed';
-            badge.className = 'badge ' + (isCuffed ? 'badge-orange' : 'badge-green');
+            badge.className = 'badge ' + (isCuffed ? 'badge-teal' : 'badge-green');
 
             // Formula display
             const offset = isCuffed ? '3.5' : '4';
