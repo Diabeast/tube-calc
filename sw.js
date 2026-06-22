@@ -4,8 +4,7 @@ const URLS = [
   '.',
   'index.html',
   'manifest.json',
-  'icon.svg',
-  'favicon a.png',
+  'logoanest.png',
   'anestbanner.png'
 ];
 
