@@ -702,13 +702,13 @@
         .home-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 16px;
+            gap: 19px;
             margin-top: 16px;
         }
         .home-card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 24px 28px 24px 34px;
+            padding: 29px 34px 29px 41px;
             cursor: pointer;
             border: var(--card-border);
             box-shadow: var(--card-shadow);
@@ -724,23 +724,23 @@
         .home-card::before {
             content: '';
             position: absolute;
-            top: 10px; left: 0; bottom: 10px;
-            width: 5px;
-            border-radius: 5px;
+            top: 0; left: 0; bottom: 0;
+            width: 6px;
+            border-radius: 0;
             background: var(--primary);
             transition: background 0.3s;
         }
         .home-card:nth-child(1)::before { background: linear-gradient(180deg, #49ff5f, #68f05e); }
         .home-card:nth-child(2)::before { background: linear-gradient(180deg, #00c7be, #43d2ff); }
         .home-card:nth-child(3)::before { background: linear-gradient(180deg, #1d4dff, #2f66ff); }
-        .home-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text-color); }
-        .home-card p { font-size: 0.9rem; color: var(--subtext-color); line-height: 1.5; margin: 0; }
+        .home-card h3 { font-size: 1.56rem; font-weight: 700; margin-bottom: 4px; color: var(--text-color); }
+        .home-card p { font-size: 1.08rem; color: var(--subtext-color); line-height: 1.5; margin: 0; }
 
         @media (max-width: 420px) {
-            .home-grid { gap: 12px; }
-            .home-card { padding: 18px 20px 18px 26px; }
-            .home-card h3 { font-size: 1.1rem; }
-            .home-card p { font-size: 0.78rem; }
+            .home-grid { gap: 14px; }
+            .home-card { padding: 22px 24px 22px 31px; }
+            .home-card h3 { font-size: 1.32rem; }
+            .home-card p { font-size: 0.94rem; }
         }
 
         /* ============ RESPONSIVE ============ */
