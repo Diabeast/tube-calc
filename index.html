@@ -904,7 +904,7 @@
 
             <div class="home-card" onclick="switchView('kefzol')" role="button" tabindex="0">
                 <h3>Antibiotica kind</h3>
-                <p>Cefazoline (30 mg/kg) · Metronidazole (15 mg/kg)</p>
+                <p id="home-ab-text">Cefazoline (30 mg/kg) · Metronidazole (15 mg/kg)</p>
             </div>
 
             <div class="home-card" onclick="switchView('calculator')" role="button" tabindex="0">
@@ -1118,7 +1118,7 @@
         <!-- Hero -->
         <div class="hero">
             <h1>Antibiotica kind</h1>
-            <p>Cefazoline (30 mg/kg, max 2 g) · Metronidazole (15 mg/kg, max 500 mg)</p>
+            <p id="ab-hero-text">Cefazoline (30 mg/kg, max 2 g) · Metronidazole (15 mg/kg, max 500 mg)</p>
         </div>
 
         <!-- Weight input -->
@@ -1148,8 +1148,8 @@
                 <div class="result-value" id="cef-result" style="color:var(--primary);">—</div>
                 <div class="result-unit" id="cef-unit">mg</div>
                 <div class="tiva-meta" id="cef-meta" style="display:none;">
-                    <div class="result-meta-item">Dosering <strong>30 mg/kg</strong></div>
-                    <div class="result-meta-item">Maximum <strong>2000 mg (2 g)</strong></div>
+                    <div class="result-meta-item">Dosering <strong id="cef-meta-dose">30 mg/kg</strong></div>
+                    <div class="result-meta-item">Maximum <strong id="cef-meta-max">2000 mg (2 g)</strong></div>
                 </div>
             </div>
 
@@ -1160,8 +1160,8 @@
                 <div class="result-value" id="metro-result" style="color:var(--accent);">—</div>
                 <div class="result-unit" id="metro-unit">mg</div>
                 <div class="tiva-meta" id="metro-meta" style="display:none;">
-                    <div class="result-meta-item">Dosering <strong>15 mg/kg</strong></div>
-                    <div class="result-meta-item">Maximum <strong>500 mg</strong></div>
+                    <div class="result-meta-item">Dosering <strong id="metro-meta-dose">15 mg/kg</strong></div>
+                    <div class="result-meta-item">Maximum <strong id="metro-meta-max">500 mg</strong></div>
                 </div>
             </div>
         </div>
@@ -1287,6 +1287,8 @@
 
         function tivaCalc() {
             const weight = parseFloat(document.getElementById('tiva-weight').value);
+            const prop = getTIVA('propofol');
+            const remi = getTIVA('remifentanil');
 
             const propResult = document.getElementById('tiva-prop-result');
             const propUnit = document.getElementById('tiva-prop-unit');
@@ -1308,28 +1310,24 @@
                 return;
             }
 
-            // Propofol: 6 mg/kg/h at 10 mg/ml
-            const propDose = 6; // mg/kg/h
-            const propConc = 10; // mg/ml
-            const propMlPerHour = (propDose * weight) / propConc;
+            // Propofol: dosis mg/kg/h at concentratie mg/ml
+            const propMlPerHour = (prop.dosis * weight) / prop.concentratie;
 
             propResult.textContent = tivaFmt(propMlPerHour, 1) + '';
             propResult.style.color = 'var(--primary)';
             propUnit.textContent = 'ml/uur';
-            document.getElementById('tiva-prop-dose').textContent = '6 mg/kg/h';
-            document.getElementById('tiva-prop-conc').textContent = '10 mg/ml';
+            document.getElementById('tiva-prop-dose').textContent = prop.dosis + ' ' + prop.dosis_eenheid;
+            document.getElementById('tiva-prop-conc').textContent = prop.concentratie + ' ' + prop.conc_eenheid;
             propMeta.style.display = 'flex';
 
-            // Remifentanil: 10 µg/kg/h at 50 µg/ml
-            const remiDosePerHour = 10; // µg/kg/h
-            const remiConc = 50; // µg/ml
-            const remiMlPerHour = (remiDosePerHour * weight) / remiConc;
+            // Remifentanil: dosis µg/kg/h at concentratie µg/ml
+            const remiMlPerHour = (remi.dosis * weight) / remi.concentratie;
 
             remiResult.textContent = tivaFmt(remiMlPerHour, 1) + '';
             remiResult.style.color = 'var(--accent)';
             remiUnit.textContent = 'ml/uur';
-            document.getElementById('tiva-remi-dose').textContent = '10 µg/kg/h';
-            document.getElementById('tiva-remi-conc').textContent = '50 µg/ml';
+            document.getElementById('tiva-remi-dose').textContent = remi.dosis + ' ' + remi.dosis_eenheid;
+            document.getElementById('tiva-remi-conc').textContent = remi.concentratie + ' ' + remi.conc_eenheid;
             remiMeta.style.display = 'flex';
         }
 
@@ -1338,11 +1336,49 @@
             tivaCalc();
         }
 
-        // ============ ANTIBIOTICA (Cefazoline + Metronidazole) ============
-        const CEF_DOSE_PER_KG = 30;    // mg/kg
-        const CEF_MAX_DOSE = 2000;     // mg (2 gram)
-        const METRO_DOSE_PER_KG = 15;  // mg/kg
-        const METRO_MAX_DOSE = 500;    // mg
+        // ============ DOSERINGEN CONFIG (geladen uit doseringen.json) ============
+        // Fallback default — gebruikt als doseringen.json niet geladen kan worden (offline)
+        const DOSAGES_DEFAULT = {
+            antibiotica: {
+                cefazoline: { dosis_per_kg: 30, max_dosis: 2000, dosis_eenheid: 'mg/kg', max_dosis_label: '2000 mg (2 g)' },
+                metronidazole: { dosis_per_kg: 15, max_dosis: 500, dosis_eenheid: 'mg/kg', max_dosis_label: '500 mg', drempel_kg: 33 }
+            },
+            tiva: {
+                propofol: { dosis: 6, dosis_eenheid: 'mg/kg/h', concentratie: 10, conc_eenheid: 'mg/ml' },
+                remifentanil: { dosis: 10, dosis_eenheid: 'µg/kg/h', concentratie: 50, conc_eenheid: 'µg/ml' }
+            }
+        };
+        let DOSAGES = null; // wordt gezet na laden van doseringen.json
+
+        function getAB(key) {
+            // Haalt antibiotica config op (uit DOSAGES of fallback)
+            const cfg = DOSAGES || DOSAGES_DEFAULT;
+            return cfg.antibiotica[key];
+        }
+
+        function getTIVA(key) {
+            const cfg = DOSAGES || DOSAGES_DEFAULT;
+            return cfg.tiva[key];
+        }
+
+        // Update UI teksten vanuit geladen config
+        function updateDoseringUI() {
+            const cefa = getAB('cefazoline');
+            const metro = getAB('metronidazole');
+            const cefaDosis = cefa.dosis_per_kg + ' ' + cefa.dosis_eenheid;
+            const cefaMax = cefa.max_dosis_label;
+            const metroDosis = metro.dosis_per_kg + ' ' + metro.dosis_eenheid;
+            const metroMax = metro.max_dosis_label;
+
+            document.getElementById('home-ab-text').textContent =
+                'Cefazoline (' + cefaDosis + ') · Metronidazole (' + metroDosis + ')';
+            document.getElementById('ab-hero-text').textContent =
+                'Cefazoline (' + cefaDosis + ', max ' + cefaMax + ') · Metronidazole (' + metroDosis + ', max ' + metroMax + ')';
+            document.getElementById('cef-meta-dose').textContent = cefaDosis;
+            document.getElementById('cef-meta-max').textContent = cefaMax;
+            document.getElementById('metro-meta-dose').textContent = metroDosis;
+            document.getElementById('metro-meta-max').textContent = metroMax;
+        }
 
         function cefFmt(val) {
             if (isNaN(val) || !isFinite(val)) return '—';
@@ -1364,6 +1400,8 @@
 
         function cefCalc() {
             const weight = parseFloat(document.getElementById('cef-weight').value);
+            const cefa = getAB('cefazoline');
+            const metro = getAB('metronidazole');
 
             const cefResult = document.getElementById('cef-result');
             const cefUnit = document.getElementById('cef-unit');
@@ -1385,24 +1423,24 @@
                 return;
             }
 
-            // Cefazoline: 30 mg/kg, max 2000 mg
-            const cefCalcDose = weight * CEF_DOSE_PER_KG;
-            const cefFinal = Math.min(cefCalcDose, CEF_MAX_DOSE);
-            const cefMaxed = cefCalcDose > CEF_MAX_DOSE;
+            // Cefazoline: dosis_per_kg mg/kg, max max_dosis mg
+            const cefCalcDose = weight * cefa.dosis_per_kg;
+            const cefFinal = Math.min(cefCalcDose, cefa.max_dosis);
+            const cefMaxed = cefCalcDose > cefa.max_dosis;
 
             cefResult.textContent = cefFmt(cefFinal);
             cefResult.style.color = 'var(--primary)';
-            cefUnit.textContent = 'mg' + (cefMaxed ? ' (max 2000 mg)' : '');
+            cefUnit.textContent = 'mg' + (cefMaxed ? ' (max ' + cefa.max_dosis_label + ')' : '');
             cefMeta.style.display = 'flex';
 
-            // Metronidazole: 15 mg/kg, max 500 mg
-            const metroCalcDose = weight * METRO_DOSE_PER_KG;
-            const metroFinal = Math.min(metroCalcDose, METRO_MAX_DOSE);
-            const metroMaxed = metroCalcDose > METRO_MAX_DOSE;
+            // Metronidazole: dosis_per_kg mg/kg, max max_dosis mg
+            const metroCalcDose = weight * metro.dosis_per_kg;
+            const metroFinal = Math.min(metroCalcDose, metro.max_dosis);
+            const metroMaxed = metroCalcDose > metro.max_dosis;
 
             metroResult.textContent = cefFmt(metroFinal);
             metroResult.style.color = 'var(--accent)';
-            metroUnit.textContent = 'mg' + (metroMaxed ? ' (max 500 mg)' : '');
+            metroUnit.textContent = 'mg' + (metroMaxed ? ' (max ' + metro.max_dosis_label + ')' : '');
             metroMeta.style.display = 'flex';
         }
 
@@ -1553,9 +1591,33 @@
             }
         }, { passive: true });
 
+        // ============ DOSERINGEN.JSON LADEN ============
+        function loadDoseringen() {
+            fetch('doseringen.json?' + Date.now()) // cache-buster
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    DOSAGES = data;
+                    updateDoseringUI();
+                    // Herbereken open views met nieuwe waarden
+                    var active = document.querySelector('.view.active');
+                    if (active) {
+                        var id = active.id;
+                        if (id === 'view-dosering') tivaCalc();
+                        if (id === 'view-kefzol') cefCalc();
+                    }
+                })
+                .catch(function() {
+                    // Fallback naar DOSAGES_DEFAULT — fout is niet kritisch
+                    console.warn('doseringen.json niet geladen, gebruik fallback');
+                    updateDoseringUI();
+                });
+        }
+        // Start laden — gelijk na init, voordat SW registreert
+        loadDoseringen();
+
         // ============ SERVICE WORKER ============
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
+            navigator.serviceWorker.register('sw.js').catch(function() {});
         }
     </script>
 </body>

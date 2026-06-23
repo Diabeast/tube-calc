@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "last_checked": "2026-06-23",
+  "bron": "Kinderformularium.nl",
+  "antibiotica": {
+    "cefazoline": {
+      "label": "Cefazoline",
+      "indicatie": "Perioperative profylaxe (1 mnd - 18 jr)",
+      "dosis_per_kg": 30,
+      "dosis_eenheid": "mg/kg",
+      "max_dosis": 2000,
+      "max_dosis_label": "2000 mg (2 g)",
+      "toediening": "IV, peri-operatief eenmalig, zo nodig na 4 uur herhalen"
+    },
+    "metronidazole": {
+      "label": "Metronidazole",
+      "indicatie": "Perioperative profylaxe",
+      "dosis_per_kg": 15,
+      "dosis_eenheid": "mg/kg",
+      "max_dosis": 500,
+      "max_dosis_label": "500 mg",
+      "drempel_kg": 33,
+      "toediening": "IV, <33 kg: 15 mg/kg, ≥33 kg: 500 mg, zo nodig na 8 uur herhalen"
+    }
+  },
+  "tiva": {
+    "propofol": {
+      "label": "Propofol",
+      "dosis": 6,
+      "dosis_eenheid": "mg/kg/h",
+      "concentratie": 10,
+      "conc_eenheid": "mg/ml"
+    },
+    "remifentanil": {
+      "label": "Remifentanil",
+      "dosis": 10,
+      "dosis_eenheid": "µg/kg/h",
+      "concentratie": 50,
+      "conc_eenheid": "µg/ml"
+    }
+  }
+}

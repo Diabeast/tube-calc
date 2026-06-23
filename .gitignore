@@ -12,3 +12,6 @@ Thumbs.db
 # Env
 .env
 .env.local
+
+# Local machine scripts (contain absolute paths)
+check-kinderformularium.bat

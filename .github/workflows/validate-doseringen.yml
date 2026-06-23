@@ -1,0 +1,77 @@
+name: Valideer doseringen
+
+on:
+  push:
+    paths:
+      - 'doseringen.json'
+  workflow_dispatch: # handmatig te starten
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Valideer JSON
+        run: |
+          echo "=== Valideren van doseringen.json ==="
+          # Check of het valide JSON is
+          if ! jq . doseringen.json > /dev/null 2>&1; then
+            echo "❌ FOUT: doseringen.json is geen valide JSON"
+            exit 1
+          fi
+          echo "✅ Valide JSON"
+
+          # Check of verplichte velden bestaan
+          echo ""
+          echo "=== Controleren verplichte velden ==="
+
+          FIELDS=(
+            ".version"
+            ".last_checked"
+            ".bron"
+            ".antibiotica.cefazoline.dosis_per_kg"
+            ".antibiotica.cefazoline.max_dosis"
+            ".antibiotica.metronidazole.dosis_per_kg"
+            ".antibiotica.metronidazole.max_dosis"
+            ".tiva.propofol.dosis"
+            ".tiva.propofol.concentratie"
+            ".tiva.remifentanil.dosis"
+            ".tiva.remifentanil.concentratie"
+          )
+
+          ALL_OK=true
+          for field in "${FIELDS[@]}"; do
+            if jq -e "$field" doseringen.json > /dev/null 2>&1; then
+              val=$(jq -r "$field" doseringen.json)
+              echo "  ✅ $field = $val"
+            else
+              echo "  ❌ $field ontbreekt"
+              ALL_OK=false
+            fi
+          done
+
+          if [ "$ALL_OK" = false ]; then
+            echo ""
+            echo "❌ Validatie mislukt — verplichte velden ontbreken"
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ Alle verplichte velden aanwezig"
+
+      - name: Toon doseringen
+        run: |
+          echo ""
+          echo "=== Huidige doseringen ==="
+          echo "Versie: $(jq -r '.version' doseringen.json)"
+          echo "Laatst gecheckt: $(jq -r '.last_checked' doseringen.json)"
+          echo "Bron: $(jq -r '.bron' doseringen.json)"
+          echo ""
+          echo "-- Antibiotica --"
+          echo "Cefazoline: $(jq -r '.antibiotica.cefazoline.dosis_per_kg' doseringen.json) mg/kg, max $(jq -r '.antibiotica.cefazoline.max_dosis' doseringen.json) mg"
+          echo "Metronidazole: $(jq -r '.antibiotica.metronidazole.dosis_per_kg' doseringen.json) mg/kg, max $(jq -r '.antibiotica.metronidazole.max_dosis' doseringen.json) mg"
+          echo ""
+          echo "-- TIVA --"
+          echo "Propofol: $(jq -r '.tiva.propofol.dosis' doseringen.json) mg/kg/h (conc: $(jq -r '.tiva.propofol.concentratie' doseringen.json) mg/ml)"
+          echo "Remifentanil: $(jq -r '.tiva.remifentanil.dosis' doseringen.json) µg/kg/h (conc: $(jq -r '.tiva.remifentanil.concentratie' doseringen.json) µg/ml)"
